@@ -1,0 +1,444 @@
+from account.models import StudentGroup, Dean, Hod, Supervisor
+from project.models import School, Department, Groups, Project, GroupProgress
+from users.models import CustomerUser
+from .forms import AddGroupForm, AddGroupProgressForm, CreateDepartment, ApproveProject
+from django.shortcuts import render, get_object_or_404, reverse, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic import CreateView, UpdateView, DeleteView,DetailView
+
+
+@login_required
+def school(request):
+    schools = School.objects.all()
+    context = {
+        'schools': schools
+    }
+    return render(request, 'coordinator/school.html', context=context)
+
+
+@login_required
+def departmentPage(request, pk=None):
+    schools = get_object_or_404(School, pk=pk)
+    departments = Department.objects.filter(school_id=pk)
+    depart_count = departments.count()
+    deans = Dean.objects.filter(school_id=pk)
+    custom = CustomerUser.objects.filter(school=pk)
+    hods = Hod.objects.all()
+
+    context = {
+
+        'schools': schools,
+        'departments': departments,
+        'deans': deans,
+        'custom': custom,
+        'hods': hods,
+        'depart_count': depart_count,
+    }
+
+    return render(request, 'dean/department.html', context=context)
+
+
+def groups(request, pk, *args, **kwargs):
+    users = User.objects.get(pk=pk)
+    custom = CustomerUser.objects.filter(username=users)
+    supervisors = Supervisor.objects.filter(supervisor_name=users)
+    
+    # print(supervisor)
+    context={
+        'users':users,
+        'custom':custom,
+        # 'groups':groups, 
+        'supervisors':supervisors
+
+    }
+    return render(request, 'supervisor/group.html', context=context)
+
+
+@login_required
+def department_details(request, pk):
+    departments = Department.objects.get(pk=pk)
+    groups = Groups.objects.filter(department_id=departments)
+    supervisors = Supervisor.objects.filter(group_id__in=groups)
+    projects = Project.objects.filter(group_id__in=groups)
+    customs = CustomerUser.objects.filter(department=departments)
+    students = StudentGroup.objects.filter(department_name=departments)
+    group_progress = GroupProgress.objects.filter(group_id__in=groups)
+    
+    for project in projects:
+        if project.progress > 0:
+            project_progress=project.progress
+            label=project.topic
+
+    for groupp in group_progress:
+        progres = groupp.progress
+        print(progres)
+    arr =[progres]
+    print(arr)
+        # for fil in groupp.progress:
+        #     print(fil)
+    #     progres = [int(groupp.progress)]
+    #     total = sum(progres)
+    # print(progres)
+        
+    # for ele in range(0, len(progres)):
+    #     total = total + progres[ele]
+    # print(len(progres))
+        # print("I am here")
+
+    for project in projects:
+        if project.status=='approved':
+            p=project
+        #    project
+            print(p)
+        # print(project)
+
+
+    context = {
+        'departments': departments,
+        'projects': projects,
+        'supervisors': supervisors,
+        'groups': groups,
+        'customs': customs,
+        'students': students,
+        'p':p,
+        'project_progress':project_progress,
+        'label':label,
+        'group_progress':group_progress
+        }
+    return render(request, 'hod/department_detail.html', context=context )
+
+
+class StudentDetailView(LoginRequiredMixin, DetailView):
+    model = StudentGroup
+
+
+class StudentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = StudentGroup
+    success_url = '/'
+
+    def test_func(self):
+        post = self.get_object()
+        # if self.request.user == post.author:
+        #     return True
+        return True
+
+
+class GroupProjectDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Project
+    success_url = '/'
+
+    def test_func(self):
+        post = self.get_object()
+        # if self.request.user == post.author:
+        #     return True
+        return True
+
+
+class GroupProjectCreateView(LoginRequiredMixin, CreateView):
+    model = Project
+    fields = ['group_id', 'project_title', 'project_description']
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+
+class GroupProjectDetailView(LoginRequiredMixin, DetailView):
+    model = Project
+
+
+class GroupProjectUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Project
+    fields = ['project_title', 'project_description']
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        post = self.get_object()
+        # if self.request.user == post.author:
+        #     return True
+        return True
+
+
+class StudentCreateView(LoginRequiredMixin, CreateView):
+    model = StudentGroup
+    fields = ['department_name', 'student_name', 'group_id']
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+
+class StudentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = StudentGroup
+    fields = ['department_name', 'student_name', 'group_id']
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        post = self.get_object()
+        # if self.request.user == post.author:
+        #     return True
+        return True
+
+
+@login_required
+def dean_department_detail(request, pk):
+    departments = Department.objects.get(pk=pk)
+    groups = Groups.objects.filter(department_id=departments)
+    groups_numbers=groups.count()
+    # supervisors = Supervisor.objects.filter(department__in=departments)
+    projects = Project.objects.filter(group_id__in=groups)
+    customs = CustomerUser.objects.filter(department=departments)
+    students = StudentGroup.objects.filter(department_name=departments)
+
+    context = {
+        'departments': departments,
+        'groups_numbers':groups_numbers,
+        'projects': projects,
+        # 'supervisors': supervisors,
+        'groups': groups,
+        'customs': customs,
+        'students': students,
+        }
+    return render(request, 'dean/department_detail.html', context=context )
+
+
+@login_required
+def singleGroup(request, pk, *args, **kwargs):
+    groups = Groups.objects.get(pk=pk)
+    projects = Project.objects.filter(group_id=groups)
+    supervisors = Supervisor.objects.filter(group_id=groups)
+    member = StudentGroup.objects.filter(group_id=groups)
+    progress = GroupProgress.objects.filter(group_id=groups)
+
+    for project in projects:
+        if project.progress >0:
+            label= project.topic
+            project_progress=project.progress
+    
+    context = {
+        'project_progress':project_progress,
+        'label':label,
+        'projects': projects,
+        'supervisors': supervisors,
+        'groups': groups,
+        'member': member,
+        'progress': progress,
+        }
+
+    return render(request, 'group/group.html', context=context )
+
+def approve_project(request, pk, *args, **kwargs): 
+  
+    # fetch the object related to passed id 
+    appro = Project.objects.get(pk=pk)
+    appro.status='approved'
+    appro.progress=20
+    appro.topic='Topic of project'
+    appro.save(update_fields=["status", "progress", "topic"]) 
+    
+    context ={
+        'appro':appro
+    } 
+    
+  
+    return render(request, "hod/approve_project.html", context) 
+
+def reject_project(request, pk, *args, **kwargs):
+    appro = Project.objects.get(pk=pk)
+    appro.status='Project was rejected'
+    appro.progress=0
+    appro.save(update_fields=["status", "progress"]) 
+
+    # if request.method == 'GET':
+    #     print(appro.status)
+    
+    context ={
+        'appro':appro
+    } 
+    
+  
+    return render(request, "hod/reject_project.html", context)
+
+def approve_file(request, pk, *args, **kwargs): 
+  
+    # fetch the object related to passed id 
+    appro = Project.objects.get(pk=pk)
+    group_file=GroupProgress.objects.get(pk=pk)
+    group_file.status='approved'
+    if group_file.files_type == 'project_proposal':
+        group_file.progress=25
+    elif group_file.files_type == 'project_erd':
+        group_file.progress=15 
+    # project_proposal
+    # project_erd
+    # group_file.progress=25
+    data=group_file.progress
+    lebels=group_file.files_type
+    group_file.save(update_fields=["status", "progress"]) 
+    # print(data)
+    # print(group_file.files_type)
+    
+    context ={
+        'group_file':group_file,
+        'data':data,
+        'lebels':lebels
+    } 
+    
+  
+    return render(request, "supervisor/approve_file.html", context) 
+
+def reject_file(request, pk, *args, **kwargs):
+    appro = Project.objects.get(pk=pk)
+    group_file=GroupProgress.objects.get(pk=pk)
+    group_file.status='pending...'
+    group_file.progress=0
+    data=group_file.progress
+    lebels=group_file.files_type
+    group_file.save(update_fields=["status", "progress"]) 
+    # print(data)
+    # print(group_file.files_type)
+    
+    context ={
+        'appro':appro,
+        'data':data,
+        'lebels':lebels,
+        'group_file':group_file
+    } 
+
+    return render(request, "supervisor/reject_file.html", context)
+
+
+@login_required
+def groupProgress(request):
+    if request.method == 'POST':
+        form = AddGroupProgressForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, ' your account has been Updated!')
+            return redirect('home')
+    else:
+        form = AddGroupProgressForm()
+
+    context = {
+        'form': form
+    }
+    return render(request, 'group/progress.html', context)
+
+
+@login_required
+def group_detail(request, pk, *args, **kwargs):
+    group = Groups.objects.get(pk=pk)
+    custom = CustomerUser.objects.filter(username=request.user)
+    group_progress=GroupProgress.objects.filter(group_id=group)
+    students = StudentGroup.objects.filter(group_id=group)
+    teachers = Supervisor.objects.filter(supervisor_name=request.user)
+    projects = Project.objects.filter(group_id=group)
+
+    for project in projects:
+        if project.progress >0:
+            project_progress= project.progress
+            label=project.topic
+            print(project_progress, label)
+
+    for pro in group_progress:
+        labels = pro.files_type
+        data = pro.progress
+        print(data)
+    
+    context = {
+        'project_progress':project_progress,
+        'label':label,
+        'students': students,
+        'custom': custom,
+        'group':group,
+        'group_progress':group_progress,
+        'teachers': teachers,
+        'projects': projects,
+        'labels':labels,
+        'data':data
+    }
+    return render(request, 'supervisor/group_detail.html', context=context)
+
+def singleProject(request, pk, *args, **kwargs):
+    project= Project.objects.get(pk=pk)
+    context={
+     'project':project
+    }
+    return render(request, 'dean/singleproject.html', context)
+
+
+@login_required
+def hodGroupDetail(request, pk):
+    groups = Groups.objects.get(pk=pk)
+    projects = Project.objects.filter(group_id=groups)
+    supervisors = Supervisor.objects.filter(group_id=groups)
+    students_group = StudentGroup.objects.filter(group_id=groups)
+    customs = CustomerUser.objects.all()
+    hods = Hod.objects.all()
+    context = {
+        'projects': projects,
+        'supervisors': supervisors,
+        'groups': groups,
+        'customs': customs,
+        'hods': hods,
+        'students_group': students_group,
+        }
+    return render(request, 'hod/hod_group.html', context=context )
+
+
+@login_required
+def create_group(request):
+    form = AddGroupForm(request.POST)
+    if request.method == 'POST':
+        try:
+            if form.is_valid():
+                group = form.save(commit=False)
+                group.save()
+                messages.success(request, 'group was created successfully')
+        except Exception as e:
+            form = AddGroupForm()
+            messages.warning(request, 'Sorry, group not created, try again.Error : {}'.format(e))
+
+    return render(request, 'hod/addgroup.html', {'form': form})
+
+
+@login_required
+def hodSupervisorDetail(request, pk):
+    customs_user = CustomerUser.objects.get(pk=pk)
+    groups = Groups.objects.all()
+    students = StudentGroup.objects.all()
+    supervisors = Supervisor.objects.all()
+
+    context = {
+            'groups': groups,
+            'supervisors': supervisors,
+            'students': students,
+            'customs_user': customs_user,
+            }
+    return render(request, 'hod/supervisor.html', context=context)
+
+
+@login_required
+def create_department(request):
+    form = CreateDepartment(request.POST)
+    if request.method == 'POST':
+        try:
+            if form.is_valid():
+                group = form.save(commit=False)
+                group.save()
+                messages.success(request, 'Department was created successfully')
+        except Exception as e:
+            form = AddGroupForm()
+            messages.warning(request, 'Sorry, Department not created, try again.Error : {}'.format(e))
+
+    return render(request, 'hod/create_department.html', {'form': form})
+

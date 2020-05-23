@@ -1,0 +1,326 @@
+{% extends 'bases/supervisor.html' %}
+{% load static %}
+
+{% block scripts%}
+<script>
+    // files_type
+    //     data = pro.progres
+$(document).ready(function(){
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['{{label}}',{% for pro in group_progress %} '{{pro.files_type}}',{% endfor %}],
+            datasets: [{
+                label: ['{{labels}}'],
+                data: [{{project_progress}},{% for pro in group_progress %} {{pro.progress}}, {% endfor %}],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+});
+</script>
+{% endblock scripts%}
+
+{% block content %}
+
+
+<div class="row" style="margin-top:20px;max-width:100%">
+    <div class="col-3" style="">
+        <div class="list-group" id="list-tab" role="tablist" style="padding:10px">
+
+            <a id="list-dashboard-list" data-toggle="list"
+               style = "padding-bottom: 19px;background: #495057;color: white;text-align: center;padding-top: 19px;font-weight: bolder;margin-top:3px"
+               class="nav-item nav-link nav-link-item-active" href="#list-dashboard" role="tab"
+               aria-controls="dashboard">
+                <i style="color:white;margin-right:9px;" class="fa fa-home"></i> My Group</a>
+
+            <a id="list-project-list" data-toggle="list"
+                style = "padding-bottom: 19px;background: #495057;color: white;text-align: center;padding-top: 19px;font-weight: bolder;margin-top:3px"
+               class="nav-item nav-link" href="#list-project" role="tab" aria-controls="project">
+                Projects</a>
+
+            <a id="list-notification-list" data-toggle="list"
+                style = "padding-bottom: 19px;background: #495057;color: white;text-align: center;padding-top: 19px;font-weight: bolder;margin-top:3px"
+               class="nav-item nav-link" href="#list-notification" role="tab" aria-controls="notification">
+                <i style="color:red;margin-right:9px" class="fa fa-bell"></i> Notifications</a>
+
+            <a id="list-uploads-list" data-toggle="list"
+                style = "padding-bottom: 19px;background: #495057;color: white;text-align: center;padding-top: 19px;font-weight: bolder;margin-top:3px"
+               class="nav-item nav-link" href="#list-uploads" role="tab" aria-controls="uploads">
+                Uploaded files</a>
+
+            <a id="list-progress-list" data-toggle="list"
+                style = "padding-bottom: 19px;background: #495057;color: white;text-align: center;padding-top: 19px;font-weight: bolder;margin-top:3px"
+               class="nav-item nav-link" href="#list-progress" role="tab" aria-controls="progress">
+                <i style="color:red;margin-right:9px" class="fa fa-spinner"></i>Group Progress</a>
+
+            <a id="list-chat-list" data-toggle="list"
+               style = "padding-bottom: 19px;background: #495057;color: white;text-align: center;padding-top: 19px;font-weight: bolder;margin-top:3px"
+               class="nav-item nav-link" href="#list-chat" role="tab" aria-controls="chat">
+                Chat</a>
+        </div>
+    </div>
+
+    <div class="col" style="margin-right:10px">
+        <div class="tab-content" id="nav-tabContent">
+
+            <!--         group dashboard-->
+
+            <!--         project-->
+            <div class="tab-pane fade" id="list-project" role="tabpanel" aria-labelledby="list-project-list"
+                 style="margin-left:10px;margin-right:7px;">
+
+                 <h4 style="color:blue;margin-top:50px;margin-bottom:20px ">
+                     Group Name : {{group}}</h4>
+
+                     <h4 style="margin-top:3px;text-align: center;background: #71e1e1;padding: 10px;">
+                        Group Project </h4>
+
+                {% for project in projects %}
+                
+                <h5 style="margin-top:3px;text-align: center">title : <a href="#">{{ project.project_title}}</a>
+                </h5>
+                <h5 >Description :</h5> {{ project.project_description}}
+                <h5>Project status: <span class="text-success">{{project.status}}</span> </h5>
+                
+                <p><a style="padding:0px" href="{% url 'approve_project' project.pk %}" class="btn btn-outline-success btn-sm text-primary">Approve project</a> <a style="padding:0px" href="{% url 'reject_project' project.pk %}" class="btn btn-outline-danger btn-sm text-info">reject project</a></p>
+     
+                <br>
+                <hr>
+                <br>
+                {% endfor %}
+                
+
+            </div>
+            <!--        notification-->
+            <div class="tab-pane fade" id="list-notification" role="tabpanel" aria-labelledby="list-notification-list">
+                <h4> notification </h4>
+
+            </div>
+
+            <!--        uploads-->
+            <div class="tab-pane fade" id="list-uploads" role="tabpanel" aria-labelledby="list-uploads-list">
+                <h4 style="margin-top:3px;text-align: center;background: #71e1e1;padding: 10px;">
+                    Project Files Submitted For Progress Purpose</h4>
+
+                    <h4 style="margin-top:40px;color:#31319e;background:antiquewhite; ">
+                        Group Name : {{group}} </h4>
+                 
+                <div class="card card-body">
+			        <table class="table table-sm">
+                        <tr>
+                            <th>Type of File</th>
+                            <th>Document</th>
+                            <th>Download</th>
+                            <th>status</th>
+                            <th>time</th>
+                            <th>Approve/reject</th>
+                        </tr>
+				{% for pro in group_progress %}
+                        
+                        <tr>
+                            <td>{{ pro.files_type}}</td>
+                            <td>{{ pro.file_description}}</td>
+                            <td><a class="btn btn-sm btn-info" href="{{ pro.file_description}}" download="">Download</a></td>
+                            <td><span class="text-primary">{{pro.status}}</span></td>
+                            <td>{{pro.created_at}}</td>
+                            <td><a class="btn btn-sm btn-info" href="{% url 'approve_files' pro.pk %}" >Approve</a>|<a class="btn btn-sm btn-danger" href="{% url 'reject_files' pro.pk %}">reject</a></td>
+                            <!-- <a href="#"><i style="background: #097d31;color: white;padding: 5px;" class="fa fa-download"></i></a> -->
+                        </tr>
+                     
+				{% endfor %}
+			</table>
+		  </div>
+           
+
+        </div>
+            <!--        progress-->
+            <div class="tab-pane fade" id="list-progress" role="tabpanel" aria-labelledby="list-progress-list">
+
+                <!-- <nav class="navbar navbar-expand-md" style="background:#6c757d;font-weight: 700;">
+
+                    <div class="dropdown">
+                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Project Definition
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="#">Project Title : 5%</a>
+                            <a class="dropdown-item" href="#">Project Proposal : 10%</a>
+                            <a class="dropdown-item" href="#">Project (ERD) : 10%</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#"> Total Mark : 25%</a>
+                        </div>
+                    </div>
+
+                    <div class="dropdown">
+                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Project Planning
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="#">Project Scope : 10%</a>
+                            <a class="dropdown-item" href="#">Time Management : 5%</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#"> Total Mark : 20%</a>
+                        </div>
+                    </div>
+
+                    <div class="dropdown">
+                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Project Design
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="#">Project Backend : 10%</a>
+                            <a class="dropdown-item" href="#">Project Frontend : 10%</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#"> Total Mark : 20%</a>
+                        </div>
+                    </div>
+
+                    <div class="dropdown">
+                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Project Controlling
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="#">Project Test : 10%</a>
+                            <a class="dropdown-item" href="#">Deployment : 10%</a>
+                            <a class="dropdown-item" href="#">Project Book : 15%</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#"> Total Mark : 35%</a>
+                        </div>
+                    </div>
+
+                </nav>
+
+                
+
+                <h5 style="color:blue;margin-top:30px "> Group Name : {{group}}</h5>
+                <div class="card card-body">
+			        <table class="table table-sm">
+                        <tr>
+                            <th>Type of File</th>
+                            <th>Date Submitted</th>
+                            <th>Approve</th>
+                            <th>Reject</th>
+                        </tr>
+				{% for pro in progress %}
+                        
+                        <tr>
+                            <td>{{pro.files_type}}</td>
+                            <td>Date Submitted</td>
+                            <td>
+
+
+                                <button class="btn btn-sm btn-info" onclick = "getConfirmation();"> Approve </button>
+                            </td>
+                            <td> <button class="btn btn-sm btn-danger" onclick="deletefunction()"> Delete </button>
+                            </td>
+                        </tr>
+                
+				{% endfor %}
+			</table>
+
+		</div>
+                <br> -->
+            <div class="col-sm-4 mt-3 mb-4" style="width: 90%;" >
+                <canvas id="myChart" style="width: 400px; height:400px"></canvas>
+            </div>
+                
+        </div>
+
+            <!--        start-->
+            <div class="tab-pane fade show active" id="list-dashboard" role="tabpanel"
+                 aria-labelledby="list-dashboard-list">
+
+                {% for customs in custom %}
+                {% if customs.username == user %}
+                <div class="row" style="color:green;margin-left:20px;max-width:100%">
+                    <h4 align="center">hi, <i style="color:black">{{ user.username }}</i> This is Your Group</h4>
+
+                    
+                </div>
+                {% endif %}
+                
+                {% if customs.role == 'supervisor' %}
+                
+
+                <div class="card-body">
+                    <a href="#"
+                       class="btn btn-primary btn-lg btn-block">
+                        <i style="color:black">Group Name : </i> {{group}} </a></div>
+                <div>
+                    {% for stud in students %}
+                    
+
+                    <!--    group display-->
+
+                    <div class="row" style="background:#4d4d4d;color:white;margin-left:5px">
+                        <div class="col-4" style="margin-top:30px">
+                            <img class="rounded-circle article-img" style="width:60px"
+                                 src="{{stud.student_name.profile.image.url}}" alt="...">
+                            <p style="color:orange;margin-top:10px"> {{ stud.student_name.username }}</p>
+                        </div>
+
+                        <div class="col-6" style="padding-top:10px">
+                            <h6> First Name : {{stud.student_name.first_name }}</h6>
+                            <h6> Last Name : {{ stud.student_name.last_name }}</h6>
+                            <h6> Department : {{ stud.department_name.department_name }}</h6>
+                            <h6> School : {{ stud.department_name.school_id }}</h6>
+                        </div>
+                        <br>
+                        <hr style="width:100%;height:1px;background:blue">
+
+                    </div>
+
+                    <!--    end of display-->
+                    
+                    {% endfor %}
+                </div>
+
+                <br>
+                
+
+                {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+            <!--        end-->
+
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

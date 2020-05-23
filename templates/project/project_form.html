@@ -1,0 +1,15 @@
+{% extends 'bases/index.html' %}
+{% block content %}
+     <div class="container">
+        <form  method="POST" style="margin-top:30px;margin-bottom:30px">
+          {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Group Project</legend>
+                {% include 'users/form.html' %}
+            </fieldset>
+            <div class="form-button">
+                <button class="btn btn-outline-info" type="submit">Create</button>
+            </div>
+        </form>
+     </div>
+{% endblock content %}

@@ -1,0 +1,22 @@
+{% extends 'bases/index.html' %}
+{% load widget_tweaks %}
+{% block content %}
+{% if user.is_staff %}
+
+
+<div class="container" style="margin-top:30px">
+   {% for school in schools %}
+    <div class="card border-primary mb-3" style="width:22rem;text-align:center;display:inline-block;">
+         <div class="card-header" style="color:#132eac;font-weight:bold">
+             <h5>{{ school.school_name}}</h5>
+         </div>
+        <div class="card-body">
+            <h5>Located at {{ school.school_location}} </h5>
+            <a href="{% url 'departments' school.pk %}" class="btn btn-primary">get in touch</a>
+        </div>
+    </div>
+{% endfor %}
+</div>
+
+{% endif %}
+{% endblock %}

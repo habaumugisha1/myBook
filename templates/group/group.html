@@ -1,0 +1,253 @@
+{% extends 'bases/index.html' %}
+
+{% block scripts%}
+<script>
+    // files_type
+    //     data = pro.progres
+$(document).ready(function(){
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['{{label}}', {% for pro in progress %} '{{pro.files_type}}',{% endfor %}],
+            datasets: [{
+                label: ['{{labels}}'],
+                data: [{{project_progress}},{% for pro in progress %} {{pro.progress}}, {% endfor %}],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+});
+</script>
+{% endblock scripts%}
+
+{%block content%}
+
+{% if user.is_authenticated %}
+
+<div class="row" style="background:#d6d6fa;margin-bottom:8px;max-width:100%" >
+    <div class="col">
+        <h3 align="center" style="color: brown;font-style: italic;font-weight: bold;margin-top:20px">
+            Group Name : {{groups.group_name}} </h3>{{user.username}}
+    </div>
+</div>
+
+<div class="row" style="max-width:100%">
+    <div class="col-3">
+        <div class="list-group" id="list-tab" role="tablist">
+            <a class="list-group-item list-group-item-action active" id="list-chat-list" data-toggle="list"
+               href="#list-chat" role="tab" aria-controls="chat">
+                Chat</a>
+
+            <a class="list-group-item list-group-item-action" id="list-supervisor-list" data-toggle="list"
+               href="#list-supervisor" role="tab" aria-controls="supervisor">
+                Supervisor</a>
+
+            <a class="list-group-item list-group-item-action" id="list-project-list" data-toggle="list"
+               href="#list-project" role="tab" aria-controls="project">
+                Project</a>
+
+            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list"
+               href="#list-settings" role="tab" aria-controls="settings">
+                Daily Task</a>
+
+            <a class="list-group-item list-group-item-action" id="list-uploads-list" data-toggle="list"
+               href="#list-uploads" role="tab" aria-controls="uploads">
+                Uploaded files</a>
+
+            <a class="list-group-item list-group-item-action" id="list-progress-list" data-toggle="list"
+               href="#list-progress" role="tab" aria-controls="progress">
+                Group Progress</a>
+
+            <a class="list-group-item list-group-item-action" id="list-student-list" data-toggle="list"
+               href="#list-student" role="tab" aria-controls="student">
+                Group Member</a>
+        </div>
+    </div>
+
+
+    <div class="col-8">
+        <div class="tab-content" id="nav-tabContent">
+
+            <div class="tab-pane fade " id="list-chat" role="tabpanel" aria-labelledby="list-chat-list">
+                <div class="col-sm-12 mr-4 mt-3 mb-4">
+                    <div class="card" style="width: 50%">
+                        <div class="card-body">
+                            <h5 class="card-title">wait,...Coming soon </h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="tab-pane fade" id="list-supervisor" role="tabpanel" aria-labelledby="list-supervisor-list">
+                {% for supervisor in supervisors %}
+                  <div class="row" style="margin:30px;background: #918f8c;padding:20px">
+                      <div class="col-4">
+                    <img class="rounded-circle article-img" style="width:160px;height:170px"
+                         src="{{supervisor.supervisor_name.profile.image.url}}" alt="...">
+
+                      </div>
+                      <div class="col">
+                <h4> First Name : {{supervisor.supervisor_name.first_name}}</h4>
+                <h4> Last Name : {{supervisor.supervisor_name.last_name}}</h4>
+                <h4> Email : {{supervisor.supervisor_name.email}}</h4>
+                      </div>
+                  </div>
+                {% endfor %}
+            </div>
+
+
+            <div class="tab-pane fade" id="list-project" role="tabpanel" aria-labelledby="list-project-list">
+                <a href="{% url 'group-projects-create' %}"> Add new Project</a>
+                <table class="table" style="margin-top:50px">
+                     {% for project in projects %}
+
+                    <tr style="background:#0f48997d;">
+                        <td style="color:#0923cd;;font-weight:bold"> Project Title
+                        <h5><a style="color:white" href="{% url 'group-project-detail' project.pk %}">{{project.project_title}}</a></h5>
+                   </td>
+                    </tr>
+
+                    <tr>
+                         <td style="color:#0923cd;;font-weight:bold"> Project Description</td>
+                    </tr>
+                    <tr>
+                           <td scope="col"> {{project.project_description}}</td>
+                    </tr>
+                    <tr>
+                        <td scope="col">Project status:
+                            <span class="text-success">{{project.status}}</span>
+                                                       
+                        </td>
+                 </tr>
+            
+                    {% endfor %}
+                </table>
+
+            </div>
+
+
+            <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
+                <div class="card" style="width:54rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Daily Plan Activities</h5>
+                        <table class="table" style="margin-top:20px">
+                            <thead>
+                            <tr style="background:#0f48997d;">
+                                <td style="color:#0923cd;font-weight:bold"> Task Title</td>
+                                <td style="color:#0923cd;font-weight:bold"> Uploaded by</td>
+                            </tr>
+                            {% for activity in activities %}
+                            <tr>
+                                <th scope="col">{{activity.activity_title}}</th>
+                                <th scope="col"> {{ activity.member_id }}</th>
+                            </tr>
+                            {% endfor %}
+                            </thead>
+                        </table>
+                        <br>
+                        <a href="#" class="btn btn-secondary">Add Activities</a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="tab-pane fade" id="list-uploads" role="tabpanel" aria-labelledby="list-uploads-list">
+                <div class="card" style="width:54rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Daily Uploaded Files</h5>
+                        <table class="table" style="margin-top:40px">
+                            <tr>
+                                <td style="background:#4d7db0;"> files Type</td>
+                                <td style="background:#4d7db0;"> files Name</td>
+                                <td style="background:#4d7db0;"> Status</td>
+                                <td style="background:green;"><a href="#">Download</a></td>
+                            </tr>
+                            {% for file in progress %}
+                            <tr>
+                                <td>{{ file.files_type }}</td>
+                                 <td>{{ file.file_description }}</td>
+                                 <td class="text-success">{{ file.status }}</td>
+                                <td><a href="{{ file.files_type }}/{{ file.file }}" download="">download </a></td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                        <br>
+                        <a href="{% url 'group_progress' %}" class="btn btn-secondary">Add Files</a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="tab-pane fade" id="list-progress" role="tabpanel" aria-labelledby="list-progress-list">
+                <div class="mt-5">
+                    <h2>Group Progress</h2>
+                    <div class="col-sm-4 mt-3 mb-4" style="width: 90%;" >
+                        <canvas id="myChart" style="width: 400px; height:400px"></canvas>
+                    </div>
+                    <!-- <div class="progress mt-5">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                             aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 0%; color: blue">0%
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+
+
+            <div class="tab-pane fade show active" id="list-student" role="tabpanel" aria-labelledby="list-student-list">
+                <h5>Group Members</h5>
+
+                {% for members in member %}
+                <div class="card" style="margin:30px">
+
+                        <div class="row" style="margin:30px">
+                            <div class="col-4">
+                                <img class="rounded-circle article-img" style="width:60px;height:70px"
+                                     src="{{members.student_name.profile.image.url}}" alt="...">
+                                <p style="color:orange;margin-top:10px"> {{ members.student_name.username }}</p>
+                            </div>
+                            <div class="col-6">
+                                <h6> First Name :{{members.student_name.first_name}}</h6>
+                                <h6> Last Name : {{members.student_name.last_name}}</h6>
+                                <h6> Email : {{members.student_name.email}}</h6>
+                                <h6> Department : {{members.department_name}}</h6>
+
+                            </div>
+                        </div>
+
+                </div>
+                {% endfor %}
+            </div>
+
+
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

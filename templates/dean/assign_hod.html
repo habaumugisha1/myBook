@@ -1,0 +1,46 @@
+{% extends 'bases/index.html' %}
+  {% load widget_tweaks %}
+    {% block content %}
+
+    
+    <div class="col-sm-4 mr-4 mt-3 mb-4" style="margin-left: 25%">
+        {% if messages %}
+             {% for message in messages %}
+               <div {% if message.tags %} class="alert alert-{{messages.tags}}" {% endif %} role="alert">
+                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                       <span aria-hidden="true">X</span></button>
+                       <strong>{{message}}</strong>
+               </div>
+            {% endfor %}
+        {% else %}
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Assign Hod to His/Her Department</h5>
+              <hr>
+              <br>
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {% for field in form %}
+                  <div class="form-group">
+                    {{ field.label_tag }}
+            
+                    {% render_field field class="form-control" %}
+            
+                    {% if field.help_text %}
+                      <small class="form-text text-muted">
+                        {{ field.help_text }}
+                      </small>
+                    {% endif %}
+                  </div>
+                {% endfor %}
+
+                <button type="submit" class="btn btn-success">Submit</button>
+              </form>
+              {% endif %}
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% endblock %}

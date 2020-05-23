@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8"/>
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'assets/img/apple-icon.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.ico' %}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'assets/img/apple-icon.png' %}">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>FYP Monitoring System </title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+          name='viewport'/>
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css"/>
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/light-bootstrap-dashboard.css?v=2.0.0' %}">
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link rel="stylesheet" sizes="76x76" href="{% static 'assets/css/demo.css' %}">
+
+
+</head>
+
+<nav class="navbar navbar-expand-md navbar-light bg-light" style="background:#4d7db0!important;">
+    <a class="navbar-brand" href="{% url 'home' %}"><img style="width:180px;height:80px"
+                                                         src="{% static 'images/ur-logo.jpg' %}"></a>
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav">
+            <a href="{% url 'home' %}" style="color:white;font-weight:bold" class="nav-item nav-link">
+                <i style="color:black;margin-right:9px" class="fa fa-home"> </i>Home</a>
+            <h4 style="margin-left:40px"> (FYP) Supervision Management System </h4>
+        </div>
+
+
+    </div>
+    {% if user.is_authenticated %}
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+
+            <a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true"
+               aria-expanded="false">
+                <img class="rounded-circle article-img" style="width:60px"
+                     src="{{user.profile.image.url}}" alt="...">
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+                <a class="dropdown-item" href="#">My account</a>
+                <a class="dropdown-item" href="#">Change password</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
+            </div>
+        </li>
+    </ul>
+    {% endif %}
+
+</nav>
+<nav class="navbar navbar-expand-md navbar-light" style="background: #4d7db038;">
+    <h4 style="margin-left:40px"> Final Year Projects </h4>
+    <h6 style="color: red;background: black;border-radius: 21px;padding: 4px;">{{project_count}}</h6>
+<h4 style="margin-left:40px"> Filtered Projects </h4>
+    <h6 style="color: red;background: black;border-radius: 21px;padding: 4px;">{{filter_count}}</h6>
+
+</nav>
+
+{% block content %}
+
+{% endblock %}
+<script src="{% static 'assets/js/core/jquery.3.2.1.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'assets/js/core/popper.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'assets/js/core/bootstrap.min.js' %}" type="text/javascript"></script>
+<!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
+<script src="{% static 'assets/js/plugins/bootstrap-switch.js' %}" type="text/javascript"></script>
+<!--  Google Maps Plugin    -->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+<!--  Chartist Plugin  -->
+<script src="{% static 'assets/js/plugins/chartist.min.js' %}" type="text/javascript"></script>
+<!--  Notifications Plugin    -->
+<script src="{% static 'assets/js/plugins/bootstrap-notify.js' %}" type="text/javascript"></script>
+<!-- Control Center for Light Bootstrap Dashboard: scripts for the example pages etc -->
+<script src="{% static 'assets/js/light-bootstrap-dashboard.js?v=2.0.0' %}" type="text/javascript"></script>
+<!-- Light Bootstrap Dashboard DEMO methods, don't include it in your project! -->
+<script src="{% static 'assets/js/demo.js' %}" type="text/javascript"></script>
+</html>
+
+

@@ -1,0 +1,10 @@
+{% extends 'bases/index.html' %}
+{% block content %}
+{{user.id}}
+  {% for not in notification %}
+   <h2>{{ not.title }}</h2>
+  <p>{{ not.message }}</p>
+<p><a href="{% url 'delete_notification' not.pk %}">Mark as read</a></p>
+{% endfor %}
+
+{% endblock %}

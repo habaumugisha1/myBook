@@ -1,0 +1,42 @@
+{% extends 'bases/index.html' %}
+
+{%block content%}
+
+
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-3" style="margin-top:40px">
+            welcome supervisor: <br>
+            <img class="rounded-circle article-img" style="width:70px"
+             src="{{customs_user.username.profile.image.url}}" alt="...">
+            <br>
+            {{customs_user.username.first_name }}  {{ customs_user.username.last_name }}
+
+        </div>
+        <div class="col-7">
+            <h3> you are going to supervise the following group </h3>
+               <h5 style="margin-top:30px">
+                   {% for supervisor in supervisors %}
+
+                        {% if customs_user.username == supervisor.supervisor_name %}
+
+                             Group : {{ supervisor.group_id }} <br>
+                            Email : {{ supervisor.group_id.group_email }} <br>
+                            Department : {{ supervisor.group_id.department_id }} <br>
+                           School : {{ supervisor.group_id.department_id.school_id }} <br>
+                       {% endif %}
+                   {% endfor %}
+
+               </h5>
+                   <hr>
+                Member
+                   <hr>
+                    Project
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

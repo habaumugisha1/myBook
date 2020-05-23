@@ -1,0 +1,122 @@
+{% extends 'bases/index.html' %}
+
+{%block content%}
+
+{% if user.is_authenticated %}
+
+
+<div>
+      <div class="list-group" id="list-tab" role="tablist">
+        <nav class="navbar navbar-expand-md navbar-light" style="background:#203447; align:center">
+
+         <a data-toggle="list" style="margin-left:20px;color:orange"
+               href="#" role="tab" aria-controls="" class="nav-item nav-link">
+                 Group Name : {{groups.group_name}} </a>
+
+             <a id="list-supervisor-list" data-toggle="list" style="margin-left:20px"
+               href="#list-supervisor" role="tab" aria-controls="supervisor" class="nav-item nav-link">
+                Supervisor </a>
+
+
+            <a id="list-project-list" data-toggle="list" style="margin-left:20px"
+               href="#list-project" role="tab" aria-controls="project" class="nav-item nav-link">
+                Project </a>
+
+
+
+            <a id="list-member-list" data-toggle="list" style="margin-left:20px"
+               href="#list-member" role="tab" aria-controls="member" class="nav-item nav-link ">
+                Group Member</a>
+
+        </nav>
+       </div>
+
+</div>
+
+<div class="col">
+    <div class="tab-content" id="nav-tabContent">
+
+        <div class="tab-pane fade" id="list-supervisor" role="tabpanel" aria-labelledby="list-supervisor-list">
+                    {% for supervisor in supervisors %}
+                        Name : {{supervisor.supervisor_name.first_name}} {{supervisor.supervisor_name.last_name}}</h4> <br>
+                        Email : {{supervisor.supervisor_name.email}}</h4>
+                  {% endfor %}
+        </div>
+
+        <div class="tab-pane fade show active" id="list-member" role="tabpanel" aria-labelledby="list-member-list">
+                <h4 style="margin-top:40px;text-align:center">Group Members</h4>
+                 <div class="card card-body">
+			        <table class="table table-sm">
+                        <tr>
+                            <th>FirstName</th>
+                            <th>LastName</th>
+                            <th>Reg Number/ Username</th>
+                            <th>More</th>
+                        </tr>
+				{% for members in students_group %}
+                        <tr>
+                            <td>{{members.student_name.first_name}}</td>
+                            <td>{{members.student_name.last_name}}</td>
+                            <td>{{members.student_name}}</td>
+                            <td><a style="font-size: 23px;padding: 0;text-transform: capitalize;"  href="{% url 'student-detail' members.id %}">Edit</a></td>
+                        </tr>
+				{% endfor %}
+            </table>
+                     <br>
+                        <a style="padding:0px" href="{% url 'student-create'%}" class="btn btn-secondary">Add Student</a>
+		</div>
+
+            </div>
+
+        <div class="tab-pane fade" id="list-project" role="tabpanel" aria-labelledby="list-project-list">
+                <table class="table" style="margin-top:50px">
+                    <thead>
+                    <tr style="background:#0f48997d;">
+                        <td style="color:#0923cd;;font-weight:bold"> Project Title</td>
+                    </tr>
+                    {% for project in projects %}
+                    {% if project.status %}
+                    <tr>
+                        <th scope="col">{{project.project_title}}</th>
+                    </tr>
+                    
+                    <tr style="background:#0f48997d;">
+                        <td style="color:#0923cd;font-weight:bold"> Project Description</td>
+                    </tr>
+                    
+                    <tr>
+                        <th scope="col"> {{project.project_description}}</th>
+                    </tr>
+                    <tr>
+                        <td scope="col">Project status: <span class="text-success">{{project.status}}</span></td>
+                 </tr>
+                 <!-- -->
+             {% else %}
+             <tr>
+                <th scope="col text-muted">{{project.project_title}}</th>
+            </tr>
+           
+            <tr style="background:#0f48997d;">
+                <td style="color:#0923cd;font-weight:bold"> Project Description</td>
+            </tr>
+            
+            <tr>
+                <th scope="col text-muted"> {{project.project_description}}</th>
+            </tr>
+            <tr>
+                <td scope="col">Project status: <span class="text-danger">{{project.status}}</span></td>
+         </tr>
+         
+             {% endif %}
+                    {% endfor %}
+                    </thead>
+                </table>
+
+            </div>
+    </div>
+
+
+</div>
+
+{% endif %}
+{% endblock %}

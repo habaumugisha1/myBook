@@ -1,0 +1,203 @@
+{% extends 'bases/index.html' %}
+{% load static %}
+{% block content %}
+
+{% for customs in custom %}
+{% if customs.username == user %}
+<div class="container" style="background:#e9ecef;margin-top:10px">
+    <div class="row" style="width:100%">
+        <div class="col-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">My Profile</h4>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-md-5 pr-1">
+                                <div class="form-group">
+                                    <label>User Role (disabled)</label>
+                                    <input type="text" class="form-control" style="background: #e3a68f;color: red;font-weight: 900;" disabled="" value="{{ customs.role }}">
+                                </div>
+                            </div>
+                            <div class="col-md-3 px-1">
+                                <div class="form-group">
+                                    <label>Username</label>
+                                    <input type="text" class="form-control" disabled="" value="{{ user.username }}">
+                                </div>
+                            </div>
+                            <div class="col-md-4 pl-1">
+                                <div class="form-group">
+                                    <label>Email address</label>
+                                    <input type="email" class="form-control" disabled="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 pr-1">
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <input type="text" class="form-control" disabled=""
+                                           value="{{ user.first_name }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 pl-1">
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" class="form-control" disabled="" value="{{ user.last_name }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>School</label>
+                                    <input type="text" class="form-control" disabled="" value="{{ customs.school }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 pr-1">
+                                <div class="form-group">
+                                    <label>Campus</label>
+                                    <input type="text" class="form-control" disabled="" value="NYARUGENGE">
+                                </div>
+                            </div>
+                            <div class="col-md-4 pl-1">
+                                <div class="form-group">
+                                    <label>My Address</label>
+                                    <input type="number" class="form-control" disabled="">
+                                </div>
+                            </div>
+                            {% if customs.role == 'student' %}
+                            {% for student in students %}
+                            <div class="col-md-4 px-1">
+                                <div class="form-group">
+                                    <label>Group Name</label>
+                                    <input type="text" class="form-control" disabled=""
+                                           value="{{ student.group_id.group_name}}">
+                                </div>
+                            </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Get in Touch With My Group</label>
+                                <a href="{% url 'single_group' student.group_id.pk %}"
+                                   class="btn btn-primary btn-lg btn-block">
+                                    My Group : {{ student.group_id.group_name}} </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+
+<!--                            hod dashboard-->
+
+                        {% if customs.role == 'hod' %}
+                        {% for hod in hods %}
+                        <div class="col-md-4 px-1">
+                            <div class="form-group">
+                                <label>My Department</label>
+                                <input type="text" class="form-control" disabled="" value="{{ hod.department_id}}">
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Get in Touch With My Department</label>
+                                <a href="{% url 'department_details' hod.department_id.pk %}"
+                                   class="btn btn-primary btn-lg btn-block">
+                                    Department of {{ hod.department_id}} </a>
+                            </div>
+                        </div>
+
+                        {% endfor %}
+                        {% endif %}
+
+<!--                            teacher dashboard-->
+
+                        {% if customs.role == 'supervisor' %}
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <a href="{% url 'supervisor_group' user.pk %}"
+                                       class="btn btn-primary">
+                                        Get in Touch With My Group </a>
+                                </div>
+                            </div>
+                        {% endif %}
+
+
+<!--                            dean dashboard-->
+
+                    {% if customs.role == 'dean' %}
+                        {% for dean in deans %}
+                        <div class="col-md-4 px-1">
+                            <div class="form-group">
+                                <label>My School</label>
+                                <input type="text" class="form-control" disabled="" value="{{ dean.school_id}}">
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Get in Touch With My School</label>
+                                <a href="{% url 'departments' dean.school_id.pk %}" class="btn btn-primary btn-lg btn-block">
+                                    School of {{ dean.school_id.school_name}} </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                        </div>
+                        <div class="clearfix"></div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card " style="background-image: url({% static 'images/code.png' %}); background-size: cover;">
+                <div class="author" style="margin-top:80px">
+                    <a href="#">
+                        <img class="rounded-circle article-img" style="width:50%; height: 50%;"
+                             src="{{user.profile.image.url}}" alt="...">
+                        <h5 class="title">{{ customs.first_name }}</h5>
+                    </a>
+                    <p class="description">
+                        {{ customs.last_name }}
+                    </p>
+                </div>
+                <p class="description text-center">
+                    "Lamborghini Mercy
+                    <br> Your chick she so thirsty
+                    <br> I'm in that two seat Lambo"
+                    <!--                                    </p>-->
+            </div>
+            <hr>
+            <div class="button-container mr-auto ml-auto">
+                <button href="#" class="btn btn-simple btn-link btn-icon">
+                    <i class="fa fa-facebook-square"></i>
+                </button>
+                <button href="#" class="btn btn-simple btn-link btn-icon">
+                    <i class="fa fa-twitter"></i>
+                </button>
+                <button href="#" class="btn btn-simple btn-link btn-icon">
+                    <i class="fa fa-google-plus-square"></i>
+                </button>
+            </div>
+
+            <div>
+                <div class="form-group">
+                    <label>University of Rwanda</label>
+                    <hr>
+                    <h6><a href="#" style="">
+                        NYARUGENGE CAMPUS</a></h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+{% endfor %}
+
+{% endblock %}

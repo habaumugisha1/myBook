@@ -1,0 +1,66 @@
+{% extends 'bases/index.html' %}
+{% block content %}
+<div class="container">
+<h2 style="margin-top:20px" class="mb-3"> Projects Supervised By {{ view.kwargs.username }} ({{ page_obj.paginator.count }})</h2>
+{% for post in posts %}
+
+
+     <div class="row" style="max-width:100%;margin:30px">
+        <div class="col-0">
+            <img class="rounded-circle article-img" style="width:50px;height:60px" src="{{ post.author.profile.image.url }}">
+         </div>
+        <div class="col">
+            <a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a>
+            <small class="text-muted">{{ post.date_posted|date:"F d, Y"  }}</small>
+        <h2><a class="article-title" href="{% url 'post-detail' post.id %}"> {{ post.title }} </a></h2>
+        </div>
+    </div>
+
+        <article class="media content-section">
+            <div class="media-body">
+                <p class="article-content">{{ post.content|truncatewords:50 }} </p>
+            </div>
+        </article>
+
+
+{% endfor %}
+    <hr>
+{% if is_paginated %}
+
+
+
+      {% if page_obj.has_previous %}
+
+        <a style="font-size: 30px;text-transform: capitalize;" class="btn btn-outline-info mb-4" href="?page=1">First</a>
+
+        <a style="font-size: 30px;text-transform: capitalize;" class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+
+        {% if page_obj.number == num %}
+
+          <a style="font-size: 30px;text-transform: capitalize;" class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+
+          <a style="font-size: 30px;text-transform: capitalize;" class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+
+        {% endif %}
+
+      {% endfor %}
+
+
+
+      {% if page_obj.has_next %}
+
+        <a style="font-size: 30px;text-transform: capitalize;" class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+
+        <a style="font-size: 30px;text-transform: capitalize;" class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+
+      {% endif %}
+{% endif %}
+    <hr>
+    </div>
+{% endblock content %}

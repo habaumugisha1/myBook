@@ -1,0 +1,75 @@
+{% extends 'bases/index.html' %}
+
+{% block content %}
+
+<div>
+    <div class="list-group" id="list-tab" role="tablist">
+        <nav class="navbar navbar-expand-md navbar-light" style="background:#2a4925">
+
+            <h4  style="margin-left:20px;color:orange"> {{schools.school_name}} </h4>
+
+
+            <a id="list-user-list" data-toggle="list" style="margin-left:20px"
+               href="#list-user" role="tab" aria-controls="user" class="nav-item nav-link">
+                <i style="color:white;margin-right:9px" class="fa fa-home"></i>My School </a>
+
+
+
+            <a id="list-display-list" data-toggle="list" style="margin-left:20px"
+               href="#list-display" role="tab" aria-controls="display" class="nav-item nav-link ">
+                <i style="color:white;margin-right:9px" class="fa fa-list"></i>Students & Supervisor List</a>
+
+
+
+            <a id="list-ongoing_project-list" data-toggle="list" style="margin-left:20px"
+               href="#list-ongoing_project" role="tab" aria-controls="ongoing_project" class="nav-item nav-link ">
+                <i style="color:white;margin-right:9px" class="fa fa-tasks"> </i>Ongoing Projects</a>
+
+
+
+            <a id="list-progress-list" data-toggle="list" style="margin-left:20px"
+               href="#list-progress" role="tab" aria-controls="progress" class="nav-item nav-link ">
+               <i style="color:white;margin-right:9px" class="fa fa-spinner"></i> Department Progress</a>
+
+        </nav>
+    </div>
+</div>
+
+
+
+
+
+        <div class="card" style="margin-top:30px;margin-left:30px;margin-right:10px">
+            <div class="card-body" >
+               <div class="row">
+                   <div class="col-4">
+                       <h1 style="margin-left:30px;font-weight: bold;">Departments :<i style="background:green;color:#f0b46c;padding:5px;border-radius:39px;font-size:16px;margin-left:3px">{{depart_count}}</i></h1>
+                   </div>
+                   <div class="col">
+               <a href="{% url 'assign_hod_to_depart' %}" style="float:right;margin-right:29px"><i style="color:red;" class="fa fa-plus"></i>Assign Hod To department</a>
+               <a href="{% url 'register' %}" style="float:right;margin-right:29px"><i style="color:red;" class="fa fa-plus"></i>Register</a>
+                  <a href="{% url 'create_department' %}" style="float:right;margin-right:29px"><i style="color:red;" class="fa fa-plus"></i>Add department</a>
+
+               </div>
+               </div>
+                <br>
+                <hr>
+                {% for department in departments %}
+
+                <div class="card border-primary mb-3" style="width:40%;text-align:center;display:inline-block;margin-top:30px;margin-right:30px">
+                         <div class="card-header" style="color:#132eac;font-weight:bold">
+                             <h5>Department of {{ department.department_name }}</h5>
+                         </div>
+
+                            <a href="{% url 'dean_department_detail' department.pk %}" style="padding:0px;font-size:20px" class="btn btn-info btn-sm">View Detail</a>
+
+                    </div>
+
+                {% endfor %}
+
+
+
+                </div>
+        </div>
+
+{% endblock %}

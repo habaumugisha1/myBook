@@ -1,0 +1,31 @@
+{% extends 'bases/index.html' %}
+{% block content %}
+
+<div class="container" style="margin-top:30px">
+
+<div class="row">
+     <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'group-project-update' object.id %}" style="float:right;margin-right:30px">Update</a>
+    <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'group-project-delete' object.id %}" style="float:right;margin-right:10px">Delete</a>
+
+</div>
+     <div class="card card-body">
+         <div style="background:#c7c7d1;text-align:center;padding:4px;font-size:23px;">
+             Project title
+         </div>
+         <div style="margin-top:15px">
+            <p class="article-content">{{ object.project_title }} </p>
+         </div>
+         <div style="background:#c7c7d1;text-align:center;padding:4px;font-size:23px;">
+             Project Description
+         </div>
+         <div style="margin-top:15px">
+            <p class="article-content">{{ object.project_description }} </p>
+         </div>
+
+         <div style="margin-top:15px">
+            <p class="article-content"> project status: <span class="text-success"> {{ object.status }} </span></p>
+         </div>
+		</div>
+</div>
+
+{% endblock content %}

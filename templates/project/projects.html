@@ -1,0 +1,48 @@
+{% extends 'bases/index.html' %}
+{% block content %}
+
+
+<div class="row" style="background:#4d7db038;margin:1px;padding:9px">
+    <form action="." method="get" style="">
+       <i> {{filters.form}}</i>
+        <button type="submit" class="btn btn-primary" style="padding: 6px;font-size: 15px;text-transform: lowercase;"> search</button>
+        <p style="float:right;margin-right:20px"> filter: <i style="background: burlywood;padding: 4px;border-radius:48px;color:red">{{counter_filter}}</i></p>
+        <p style="float:right;margin-right:20px"> total projects: <i style="background:burlywood;padding: 4px;border-radius: 48px;">{{counter_pro}}</i></p>
+    </form>
+</div>
+<div class="container">
+
+{% for post in pros %}
+ <div class="row" style="max-width:100%;margin:30px">
+
+        <div class="col">
+        <h3><a class="article-title" href="{% url 'post-detail' post.id %}"> {{ post.title }} </a></h3>
+        </div>
+    </div>
+
+<article class="media content-section" style="margin:30px">
+    <div class="media-body">
+        <p class="article-content">{{ post.content|truncatechars:460 }} </p>
+    </div>
+</article>
+{% endfor %}
+
+{% if is_paginated %}
+      {% if page_obj.has_previous %}
+        <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+      {% endif %}
+{% endif %}
+    </div>
+{% endblock content %}

@@ -1,0 +1,19 @@
+{% extends 'bases/index.html' %}
+
+{% block content %}
+<div class="card mt-3 ml-4" style="margin-left:10px;margin-right:7px;">
+
+                 <h4 style="color:blue;margin-top:50px;margin-bottom:20px ">
+                     Group Name : {{project.group_id}}</h4>
+
+                     <h4 style="margin-top:3px;text-align: center;background: #71e1e1;padding: 10px;">
+                        Group Project </h4>
+
+                
+                
+                <h5 style="margin-top:3px;text-align: center">title : {{ project.project_title}}</h5>
+                <h5 >Description :<br> <span class= "" style=" margin-left: 10%;">{{ project.project_description}}</span></h5>  
+                <h5>Project status: <span class="text-success">{{project.status}}</span> </h5>     
+            
+            </div>
+{% endblock %}

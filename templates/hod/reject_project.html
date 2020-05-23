@@ -1,0 +1,39 @@
+{% extends 'bases/index.html' %}
+
+{%block content%}
+
+{% if user.is_authenticated %}
+
+
+<div>
+
+    <div class="container text-muted" style="margin-top:30px">
+
+             <div class="card card-body">
+                 <div style="background:#c7c7d1;text-align:center;padding:4px;font-size:23px;">
+                     Project title
+                 </div>
+                 <div style="margin-top:15px">
+                    <p class="article-content">{{ appro.project_title }} </p>
+                 </div>
+                 <div style="background:#c7c7d1;text-align:center;padding:4px;font-size:23px;">
+                     Project Description
+                 </div>
+                 <div style="margin-top:15px">
+                    <p class="article-content">{{ appro.project_description }} </p>
+                 </div>
+                 <div style="margin-top:15px">
+                    <p class="article-content"> Project status: <span class="text-danger">{{ appro.status }} </span></p>
+                 </div>
+                </div>
+        </div>
+        
+        
+      
+    </div>
+
+
+</div>
+
+{% endif %}
+{% endblock %}

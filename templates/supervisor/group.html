@@ -1,0 +1,31 @@
+{% extends 'bases/supervisor.html' %}
+{% load static %}
+{% block content %}
+
+
+<!-- <div class="row" style="margin-top:20px;max-width:100%;margin-left: 30px;"> -->
+    <div class="row justify-content-center mt-5" style="max-width:100%">
+        <div class="col-lg-4 col-md-6 col-sm-8">
+          <div class="card">
+            <div class="card-body">
+              <h3 class="card-title">My Groups</h3>
+              <hr />
+              {%for super in supervisors %}
+              <!-- {{super.supervisor_name}} -->
+             <h2> <a href="{% url 'group_detail' super.pk %}"
+                class="text-primary">
+                  {{super.group_id}} </a></h2>
+              {% endfor %}
+            </div>
+            
+          </div>
+          
+        </div>
+    </div>
+    
+    
+    
+<!-- </div> -->
+
+
+{% endblock %}
