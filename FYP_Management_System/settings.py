@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'account',
     'chat',
     'users',
@@ -74,7 +75,18 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'FYP_Management_System.wsgi.application'
+ASGI_APPLICATION = 'FYP_Management_System.routing.application'
 
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+            
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases

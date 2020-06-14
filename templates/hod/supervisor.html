@@ -8,16 +8,16 @@
 
     <div class="row">
         <div class="col-3" style="margin-top:40px">
-            welcome supervisor: <br>
+            
             <img class="rounded-circle article-img" style="width:70px"
              src="{{customs_user.username.profile.image.url}}" alt="...">
             <br>
-            {{customs_user.username.first_name }}  {{ customs_user.username.last_name }}
-
+           <h3> {{customs_user.username.first_name }}  {{ customs_user.username.last_name }}</h3>
+           <h4 class="text-muted mt-3 text-success">You are {{customs_user.role }}</h4>
         </div>
         <div class="col-7">
-            <h3> you are going to supervise the following group </h3>
-               <h5 style="margin-top:30px">
+            <h3 class="text-centre navbar navbar-expand-md navbar-light bg-success"> You are supervising the following group </h3>
+               <h4 style="margin-top:3%">
                    {% for supervisor in supervisors %}
 
                         {% if customs_user.username == supervisor.supervisor_name %}
@@ -27,13 +27,35 @@
                             Department : {{ supervisor.group_id.department_id }} <br>
                            School : {{ supervisor.group_id.department_id.school_id }} <br>
                        {% endif %}
-                   {% endfor %}
 
-               </h5>
-                   <hr>
-                Member
-                   <hr>
-                    Project
+                    </h4>
+                    
+                
+                <h3 class="navbar navbar-expand-md navbar-light bg-primary" style="height: 4%; color: white;text-align: center;">Group Members</h3>
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Group</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in students %}
+                       {% if student.group_id == supervisor.group_id %}
+                      <tr>
+                        <th scope="row">{{student.id}}</th>
+                        <td>{{student.student_name.first_name}}</td>
+                        <td>{{student.student_name.last_name}}</td>
+                        <td> {{student.group_id}}</td>
+                      </tr>
+                      {% endif %}
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                  <hr style="color: green;">
+                  {% endfor %}
         </div>
 
     </div>

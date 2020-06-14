@@ -50,19 +50,20 @@ $(document).ready(function(){
 
 {% if user.is_authenticated %}
 
-<div class="row" style="background:#d6d6fa;margin-bottom:8px;max-width:100%" >
-    <div class="col">
-        <h3 align="center" style="color: brown;font-style: italic;font-weight: bold;margin-top:20px">
-            Group Name : {{groups.group_name}} </h3>{{user.username}}
+<div class="row" style="background:#d6d6fa;max-width:100%; margin-left:1px; margin-top: -1.5%;" >
+    <div class="col" style="width: 100%; margin-left: 10%;">
+        <h2 style="margin-top: 10px;"> Welcome {{user.username}} </h2>
+        <h3 align="center" style="color: brown;font-style: italic;font-weight: bold;margin-top:-40px; margin-bottom: 20px;">
+            Group Name : {{groups.group_name}} </h3>
     </div>
 </div>
 
 <div class="row" style="max-width:100%">
     <div class="col-3">
-        <div class="list-group" id="list-tab" role="tablist">
-            <a class="list-group-item list-group-item-action active" id="list-chat-list" data-toggle="list"
-               href="#list-chat" role="tab" aria-controls="chat">
-                Chat</a>
+        <div class="list-group text-centre" id="list-tab" role="tablist">
+            <a class="list-group-item list-group-item-action active" id="list-student-list" data-toggle="list"
+               href="#list-student" role="tab" aria-controls="student">
+                Group Member</a>
 
             <a class="list-group-item list-group-item-action" id="list-supervisor-list" data-toggle="list"
                href="#list-supervisor" role="tab" aria-controls="supervisor">
@@ -82,29 +83,32 @@ $(document).ready(function(){
 
             <a class="list-group-item list-group-item-action" id="list-progress-list" data-toggle="list"
                href="#list-progress" role="tab" aria-controls="progress">
-                Group Progress</a>
-
-            <a class="list-group-item list-group-item-action" id="list-student-list" data-toggle="list"
-               href="#list-student" role="tab" aria-controls="student">
-                Group Member</a>
+                Our Group Progress</a>
+            <a class="list-group-item list-group-item-action" id="list-chat-list" data-toggle="list"
+               href="#list-chat" role="tab" aria-controls="chat">
+                Chat</a>
         </div>
     </div>
 
 
     <div class="col-8">
         <div class="tab-content" id="nav-tabContent">
-
+        <!-- chat -->
             <div class="tab-pane fade " id="list-chat" role="tabpanel" aria-labelledby="list-chat-list">
-                <div class="col-sm-12 mr-4 mt-3 mb-4">
+                    <div class="card card-body mt-4">
+                        <a class="btn btn-outline-success" href="{% url 'chat' %}">Chat with in your group</a>
+                    </div>
+               
+                <!-- <div class="col-sm-12 mr-4 mt-3 mb-4">
                     <div class="card" style="width: 50%">
                         <div class="card-body">
                             <h5 class="card-title">wait,...Coming soon </h5>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
 
-
+        <!-- supervisor -->
             <div class="tab-pane fade" id="list-supervisor" role="tabpanel" aria-labelledby="list-supervisor-list">
                 {% for supervisor in supervisors %}
                   <div class="row" style="margin:30px;background: #918f8c;padding:20px">
@@ -122,20 +126,20 @@ $(document).ready(function(){
                 {% endfor %}
             </div>
 
-
+            <!-- project -->
             <div class="tab-pane fade" id="list-project" role="tabpanel" aria-labelledby="list-project-list">
-                <a href="{% url 'group-projects-create' %}"> Add new Project</a>
+                <a class="btn btn-primary mt-4" href="{% url 'group-projects-create' %}"> Add new Project</a>
                 <table class="table" style="margin-top:50px">
                      {% for project in projects %}
 
                     <tr style="background:#0f48997d;">
-                        <td style="color:#0923cd;;font-weight:bold"> Project Title
+                        <td style="color:#0923cd;font-weight:bold"> Project Title
                         <h5><a style="color:white" href="{% url 'group-project-detail' project.pk %}">{{project.project_title}}</a></h5>
                    </td>
                     </tr>
 
                     <tr>
-                         <td style="color:#0923cd;;font-weight:bold"> Project Description</td>
+                         <td style="color:#0923cd;font-weight:bold"> Project Description</td>
                     </tr>
                     <tr>
                            <td scope="col"> {{project.project_description}}</td>
@@ -151,7 +155,7 @@ $(document).ready(function(){
                 </table>
 
             </div>
-
+            <!-- activity -->
 
             <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
                 <div class="card" style="width:54rem;">
@@ -177,24 +181,24 @@ $(document).ready(function(){
                 </div>
             </div>
 
-
+            <!-- files uploads -->
             <div class="tab-pane fade" id="list-uploads" role="tabpanel" aria-labelledby="list-uploads-list">
-                <div class="card" style="width:54rem;">
+                <div class="card mt-3 ml-4" style="width:90%;">
                     <div class="card-body">
-                        <h5 class="card-title">Daily Uploaded Files</h5>
-                        <table class="table" style="margin-top:40px">
+                        <!-- <h5 class="card-title">Daily Uploaded Files</h5> -->
+                        <table class="table" style="margin-top:20px">
                             <tr>
                                 <td style="background:#4d7db0;"> files Type</td>
-                                <td style="background:#4d7db0;"> files Name</td>
+                                <td style="background:#4d7db0;"> Print</td>
                                 <td style="background:#4d7db0;"> Status</td>
                                 <td style="background:green;"><a href="#">Download</a></td>
                             </tr>
                             {% for file in progress %}
                             <tr>
                                 <td>{{ file.files_type }}</td>
-                                 <td>{{ file.file_description }}</td>
+                                 <td> <a href="{{ file.file_description.url }} " target = '-blank'><i class="fa fa-file-pdf-o text-danger" aria-hidden="true"></i> Print</a></td>
                                  <td class="text-success">{{ file.status }}</td>
-                                <td><a href="{{ file.files_type }}/{{ file.file }}" download="">download </a></td>
+                                <td><a href="{{ file.file_description.url }}" download=""><i class="fa fa-cloud-download" aria-hidden="true"></i> download </a></td>
                             </tr>
                             {% endfor %}
                         </table>
@@ -203,7 +207,7 @@ $(document).ready(function(){
                     </div>
                 </div>
             </div>
-
+            <!-- group progress  -->
 
             <div class="tab-pane fade" id="list-progress" role="tabpanel" aria-labelledby="list-progress-list">
                 <div class="mt-5">
@@ -218,10 +222,10 @@ $(document).ready(function(){
                     </div> -->
                 </div>
             </div>
-
+            
+                <!-- display -->
 
             <div class="tab-pane fade show active" id="list-student" role="tabpanel" aria-labelledby="list-student-list">
-                <h5>Group Members</h5>
 
                 {% for members in member %}
                 <div class="card" style="margin:30px">

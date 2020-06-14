@@ -37,10 +37,18 @@
     <div class="tab-content" id="nav-tabContent">
 
         <div class="tab-pane fade" id="list-supervisor" role="tabpanel" aria-labelledby="list-supervisor-list">
-                    {% for supervisor in supervisors %}
-                        Name : {{supervisor.supervisor_name.first_name}} {{supervisor.supervisor_name.last_name}}</h4> <br>
-                        Email : {{supervisor.supervisor_name.email}}</h4>
-                  {% endfor %}
+                  
+            
+            {% for supervisor in supervisors %}
+            <div class="card" style="margin-left: 10%; width: 50%;">
+                <!-- <h5 class="card-header">Featured</h5> -->
+                <div class="card-body">
+                  
+                   <h4> Name : {{supervisor.supervisor_name.first_name}} {{supervisor.supervisor_name.last_name}}</h4> <br>
+                   <h4> Email : {{supervisor.supervisor_name.email}}</h4>
+                </div>
+              </div>
+            {% endfor %}
         </div>
 
         <div class="tab-pane fade show active" id="list-member" role="tabpanel" aria-labelledby="list-member-list">
@@ -63,7 +71,7 @@
 				{% endfor %}
             </table>
                      <br>
-                        <a style="padding:0px" href="{% url 'student-create'%}" class="btn btn-secondary">Add Student</a>
+                        <a class="btn btn-outline-primary stretched-link" href="{% url 'student-create'%}" >Add Student</a>
 		</div>
 
             </div>

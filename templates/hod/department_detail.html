@@ -12,7 +12,7 @@ $(document).ready(function(){
         data: {
             labels: ['{{label}}',{% for pro in group_progress %} '{{pro.files_type}}',{% endfor %}],
             datasets: [{
-                label: [{% for pro in group_progress %} '{{pro.group_id}}',{% endfor %}],
+                label: [ '{{group}}',],
                 data: [{{project_progress}},{% for pro in group_progress %} {{pro.progress}}, {% endfor %}],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
@@ -87,7 +87,7 @@ $(document).ready(function(){
 
             <a id="list-message-list" data-toggle="list" style="margin-left:20px"
                href="#list-message" role="tab" aria-controls="message" class="nav-item nav-link ">
-                <i style="color:white;margin-right:9px" class="fa fa-envelope"></i>Messages</a>
+               <i style="color:red;margin-right:9px" class="fa fa-tasks"> </i>Rejected projects</a>
         </nav>
     </div>
 </div>
@@ -168,9 +168,9 @@ $(document).ready(function(){
             </div>
                 </div>
 
-                <div class="card">
+                <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title"><i style="color:red;margin-right:9px" class="fa fa-group"> </i>Groups</h5>
+                        <h3 class="card-title" style="text-align: center;"><i style="color:red;margin-right:9px" class="fa fa-group"> </i>Groups</h3>
                         <table class="table">
                             <thead class="thead-dark">
                             <tr>
@@ -212,10 +212,11 @@ $(document).ready(function(){
 <!--        student list-->
        <div class="tab-pane fade" id="list-display" role="tabpanel" aria-labelledby="list-display-list">
 
-             <h5 style="margin-top:20px" align="center"> List of Students</h5>
+             <h5 style="margin-top:20px; text-align:center"> List of Students</h5>
 
                  <table class="table table-sm">
                         <tr>
+                            <th>No</th>
                             <th>Group</th>
                             <th>Department</th>
                             <th>Username</th>
@@ -223,6 +224,7 @@ $(document).ready(function(){
                         </tr>
 				  {% for student in students %}
                         <tr>
+                            <td>{{student.id}}</td>
                             <td>{{student.group_id}}</td>
                             <td>{{student.department_name}}</td>
                             <td>{{student.student_name}}</td>
@@ -237,7 +239,7 @@ $(document).ready(function(){
                
             <div class="card mt-4">
                 <div class="card-body">
-                    <h5 class="card-title"><i style="color:red;margin-right:9px" class="fa fa-group"> </i>On going Projects</h5>
+                    <h5 class="card-title" style="text-align: center;"><i style="color:red;margin-right:9px" class="fa fa-group"> </i>On going Projects</h5>
                     <table class="table">
                         <thead class="thead-dark">
                         <tr>
@@ -252,7 +254,7 @@ $(document).ready(function(){
                             {% ifequal project.status 'approved' %}
                         <tr>
                             <th style="padding:0px;margin:0px" scope="row">{{project.id}}</th>
-                            <td style="font-size: inherit;text-transform: capitalize;" >{{project.project_title }} </td>
+                            <td style="font-size: inherit;text-transform: capitalize;" ><a href="{% url 'dean_single_project' project.pk %}">{{project.project_title }}</a> </td>
                             <td style="font-size: inherit;text-transform: capitalize;" >{{project.group_id }} </td>
                         </tr>
                         {% endifequal %}
@@ -263,31 +265,20 @@ $(document).ready(function(){
 
                 </div>
             </div>
-
-            <!-- <h4> ongoing project list </h4> -->
-
-               
-                    
-                       
-                            <!-- {{ project.project_title }}<br>{{ project.group_id}} -->
-                       
-                    
-            
-
-            </div>
-        <!--        progress-->
+        </div>
+        <!--   Group progress-->
         <div class="tab-pane fade" id="list-progress" role="tabpanel" aria-labelledby="list-progress-list">
             <div class="container">
                 <div class="row row-cols-3">
                     {% for group in groups %}
-                        {% for pro in group_progress %}
-                            {% ifequal pro.group_id group %}
+                        <!-- {% for pro in group_progress %} -->
+                            
                                     <div class="col-sm-4 mt-3 mb-4" style="width: 90%;" >
-                                        <h2>Group : {{group.group_name}}</h2>
-                                    <canvas id="myChart" style="width: 400px; height:400px"></canvas>
+                                        
+                                    <canvas id="myChart" style="width: 400px; height:400px;"></canvas>
                                     </div>
-                            {% endifequal %}
-                        {% endfor %}
+                            
+                        <!-- {% endfor %} -->
                     {% endfor %}
                 </div>
               </div>
@@ -342,9 +333,37 @@ $(document).ready(function(){
                <h4>  notification </h4>
 
             </div>
-        <!--        messages-->
+        <!--        rejected project -->
         <div class="tab-pane fade" id="list-message" role="tabpanel" aria-labelledby="list-message-list">
-               <h4>  message </h4>
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title"><i style="color:red;margin-right:9px" class="fa fa-group"> </i>On going Projects</h5>
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Projects</th>
+                            <th>Groups</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for project in projects %}
+                            {% ifequal project.status 'Project was rejected' %}
+                        <tr>
+                            <th style="padding:0px;margin:0px" scope="row">{{project.id}}</th>
+                            <td style="font-size: inherit;text-transform: capitalize;" ><a href="{% url 'dean_single_project' project.pk %}">{{project.project_title }}</a> </td>
+                            <td style="font-size: inherit;text-transform: capitalize;" >{{project.group_id }} </td>
+                        </tr>
+                        {% endifequal %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                   
+
+                </div>
+            </div>
+        </div>
 
             </div>
 

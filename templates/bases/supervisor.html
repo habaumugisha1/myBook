@@ -44,7 +44,9 @@
             {% if user.is_authenticated %}
             <a href="{% url 'dashboard' user.pk %}" style="color:white;font-weight:bold" class="nav-item nav-link">
                 <i style="color:black;margin-right:9px" class="fa fa-dashboard"> </i>Dashboard</a>
-
+              
+                <a href="{% url 'project' %}" style="color:white;font-weight:bold" class="nav-item nav-link">
+                  <i style="color: black;" class="fa fa-graduation-cap" aria-hidden="true"></i> Final Projects</a>
         </div>
 
 
@@ -73,10 +75,10 @@
         </div>
     {%  endif %}
 </nav>
-<nav class="navbar navbar-expand-md navbar-light" style="background: #4d7db038;">
+<!-- <nav class="navbar navbar-expand-md navbar-light" style="background: #4d7db038;">
   <h4 style="margin-left:40px"> Final Year Project (FYP) Supervision Management System </h4>
 
-</nav>
+</nav> -->
     {% block scripts%}
     {% endblock scripts%}
 

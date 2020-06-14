@@ -29,7 +29,7 @@
                             <div class="col-md-4 pl-1">
                                 <div class="form-group">
                                     <label>Email address</label>
-                                    <input type="email" class="form-control" disabled="">
+                                    <input type="email" class="form-control" disabled="" value="{{ user.email}}">
                                 </div>
                             </div>
                         </div>
@@ -155,9 +155,9 @@
         </div>
         <div class="col-4">
             <div class="card " style="background-image: url({% static 'images/code.png' %}); background-size: cover;">
-                <div class="author" style="margin-top:80px">
+                <div class="author" style="margin-top:50px">
                     <a href="#">
-                        <img class="rounded-circle article-img" style="width:50%; height: 50%;"
+                        <img class="rounded-circle article-img" style="width:50%; height: 50%;margin-left: 20%;"
                              src="{{user.profile.image.url}}" alt="...">
                         <h5 class="title">{{ customs.first_name }}</h5>
                     </a>
@@ -166,10 +166,8 @@
                     </p>
                 </div>
                 <p class="description text-center">
-                    "Lamborghini Mercy
-                    <br> Your chick she so thirsty
-                    <br> I'm in that two seat Lambo"
-                    <!--                                    </p>-->
+                     <a class="btn btn-success" href="{% url 'profile' %}">Update Your profile</a>
+                 </p>
             </div>
             <hr>
             <div class="button-container mr-auto ml-auto">
@@ -188,7 +186,7 @@
                 <div class="form-group">
                     <label>University of Rwanda</label>
                     <hr>
-                    <h6><a href="#" style="">
+                    <h6><a href="#">
                         NYARUGENGE CAMPUS</a></h6>
                 </div>
             </div>

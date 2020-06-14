@@ -6,7 +6,7 @@ from .forms import RegisterForm, UserUpdateForm, ProfileUpdateForm, CustomRegist
 from django. contrib import messages
 from django.contrib.auth.decorators import login_required
 from account.models import Coordinator, Dean, Hod, Supervisor, StudentGroup, FinalProjects
-from users.models import CustomerUser
+from users.models import CustomerUser, Profile
 
 
 def home(request):
@@ -94,6 +94,7 @@ def dashboard(request, pk):
     users = User.objects.get(pk=pk)
     hods = Hod.objects.filter(hod_name=users)
     custom = CustomerUser.objects.filter(username=users)
+    profile= Profile.objects.filter(user=users)
     students = StudentGroup.objects.filter(student_name=users)
     deans = Dean.objects.filter(dean_name=users)
     coordinators = Coordinator.objects.filter(user_name=users)
@@ -103,6 +104,7 @@ def dashboard(request, pk):
         'users': users,
         'students': students,
         'custom': custom,
+        'profile':profile,
         'deans': deans,
         'hods': hods,
         'teachers': teachers,

@@ -28,8 +28,12 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
-
-    <!-- chart -->
+   <!-- bootstrap -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    
+      <!-- chart -->
    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -41,7 +45,7 @@
 <div>
 <nav class="navbar navbar-expand-md navbar-light bg-light"
      style="background:#4d7db0!important;max-width:100%">
-     <a class="navbar-brand" href="{% url 'home' %}"><img style="width:180px;height:80px" src="{% static 'images/ur-logo.jpg' %}"></a>
+     <a class="navbar-brand" href="{% url 'home' %}"><img style="width:180px;height:70px; margin-top: -7%;" src="{% static 'images/ur-logo.jpg' %}"></a>
     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -57,6 +61,9 @@
             <a href="{% url 'dashboard' user.pk %}" style="color:white;font-weight:bold" class="nav-item nav-link">
                 <i style="color:black;margin-right:9px" class="fa fa-dashboard"> </i>Dashboard</a>
             {%  endif %}
+
+            <a href="{% url 'project' %}" style="color:white;font-weight:bold" class="nav-item nav-link">
+              <i style="color: black;" class="fa fa-graduation-cap" aria-hidden="true"></i> Final Projects</a>
         </div>
 
 
@@ -66,7 +73,7 @@
                     <li class="nav-item dropdown">
 
                       <a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                       <img class="rounded-circle article-img" style="width:60px;height:70px"
+                       <img class="rounded-circle article-img" style="width:60px;height:60px"
                              src="{{user.profile.image.url}}" alt="...">
                       </a>
                       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
@@ -85,13 +92,13 @@
     {%  endif %}
 </nav>
 
-<nav class="navbar navbar-expand-md navbar-light" style="background: #4d7db038;">
+<!-- <nav class="navbar navbar-expand-md navbar-light" style="background: #4d7db038; margin-top: -2%;">
   <h4 style="margin-left:40px"> Final Year Project (FYP) Supervision Management System </h4>
             <a href="{% url 'project' %}" class="nav-item nav-link">Registered Project</a>
 
-</nav>
-    {% block scripts%}
-    {% endblock scripts%}
+</nav> -->
+    {% block scripts %}
+    {% endblock scripts %}
 
     {% block content %}
 

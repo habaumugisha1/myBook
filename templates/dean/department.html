@@ -2,9 +2,9 @@
 
 {% block content %}
 
-<div>
-    <div class="list-group" id="list-tab" role="tablist">
-        <nav class="navbar navbar-expand-md navbar-light" style="background:#2a4925">
+<div class="mt-4">
+    <div class="list-group mt-4" id="list-tab" role="tablist">
+        <nav class="navbar navbar-expand-md navbar-light" style="background:#2a4925; margin-top: -2%;">
 
             <h4  style="margin-left:20px;color:orange"> {{schools.school_name}} </h4>
 
@@ -43,7 +43,7 @@
             <div class="card-body" >
                <div class="row">
                    <div class="col-4">
-                       <h1 style="margin-left:30px;font-weight: bold;">Departments :<i style="background:green;color:#f0b46c;padding:5px;border-radius:39px;font-size:16px;margin-left:3px">{{depart_count}}</i></h1>
+                       <h1 style="margin-left:30px;font-weight: bold; margin-top: -3%;">Departments :<i style="background:green;color:#f0b46c;padding:5px;border-radius:39px;font-size:16px;margin-left:3px">{{depart_count}}</i></h1>
                    </div>
                    <div class="col">
                <a href="{% url 'assign_hod_to_depart' %}" style="float:right;margin-right:29px"><i style="color:red;" class="fa fa-plus"></i>Assign Hod To department</a>
@@ -52,12 +52,11 @@
 
                </div>
                </div>
-                <br>
-                <hr>
+                <hr class="mt-4">
                 {% for department in departments %}
 
-                <div class="card border-primary mb-3" style="width:40%;text-align:center;display:inline-block;margin-top:30px;margin-right:30px">
-                         <div class="card-header" style="color:#132eac;font-weight:bold">
+                <div class="card border-primary mb-3" style="width:40%;text-align:center;display:inline-block;margin-top:3%;margin-right:30px; height:20%">
+                         <div class="card-header" style="color:#132eac;font-weight:bold;">
                              <h5>Department of {{ department.department_name }}</h5>
                          </div>
 

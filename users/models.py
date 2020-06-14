@@ -25,4 +25,4 @@ class CustomerUser(models.Model):
     role = models.CharField(max_length=20, choices=role_choices, default='student')
 
     def __str__(self):
-        return f'{self.user.username}'
+        return f'{self.username.last_name}' f'{self.username.first_name}'

@@ -1,5 +1,5 @@
 from django.apps import AppConfig
-import users.signals
+# import users.signals
 
 
 class UsersConfig(AppConfig):

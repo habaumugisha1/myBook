@@ -1,5 +1,5 @@
 from django.contrib.auth import views as auth_views
-from django.urls import path, include
+from django.urls import path, re_path, include
 from users import views as user_views
 from chat import views as chat_views
 from project import views as project_views
@@ -9,6 +9,8 @@ from project.views import StudentUpdateView, StudentCreateView, StudentDetailVie
 from account import views as account_views
 from account.views import PostListView, PostDetailView, \
     UserPostListView, PostUpdateView, PostDeleteView, PostCreateView
+
+from chat.views import index, room
 from django.contrib import admin
 
 from django.conf import settings
@@ -74,7 +76,9 @@ urlpatterns = [
     path('notification/<int:pk>/', chat_views.all_notification, name='all_notification'),
     path('notification/show/<str:notification_id>/', chat_views.show_notification, name='show_notification'),
     path('notification/delete/<str:notification_id>/', chat_views.delete_notification, name='delete_notification'),
-    path('loggedin', chat_views.loggedin, name="loggedin",)
+    path('loggedin', chat_views.loggedin, name="loggedin"),
+    path('group/chat/', index, name='chat'),
+    path('chat/<str:room_name>/', room, name='room'),
 ]
 
 

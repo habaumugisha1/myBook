@@ -51,39 +51,51 @@ $(document).ready(function(){
 
 
 <div class="row" style="margin-top:20px;max-width:100%">
-    <div class="col-3" style="">
+    <div class="col-3" style="margin-top: -20px;">
         <div class="list-group" id="list-tab" role="tablist" style="padding:10px">
 
             <a id="list-dashboard-list" data-toggle="list"
-               style = "padding-bottom: 19px;background: #495057;color: white;text-align: center;padding-top: 19px;font-weight: bolder;margin-top:3px"
+               style = "padding-bottom: 19px;background: #495057;color: white;padding-top: 19px;font-weight: bolder;margin-top:3px"
                class="nav-item nav-link nav-link-item-active" href="#list-dashboard" role="tab"
                aria-controls="dashboard">
-                <i style="color:white;margin-right:9px;" class="fa fa-home"></i> My Group</a>
+               <span style="padding-left: 10%;"></span>
+                <i style="color:green;margin-right:9px;" class="fa fa-home"></i> My Group</a>
 
             <a id="list-project-list" data-toggle="list"
-                style = "padding-bottom: 19px;background: #495057;color: white;text-align: center;padding-top: 19px;font-weight: bolder;margin-top:3px"
+                style = "padding-bottom: 19px;background: #495057;color: white;padding-left: 3%;padding-top: 19px;font-weight: bolder;margin-top:3px"
                class="nav-item nav-link" href="#list-project" role="tab" aria-controls="project">
-                Projects</a>
+               <span style="padding-left: 10%;">
+               <i style="color: green;" class="fa fa-product-hunt" aria-hidden="true"></i> Projects</span></a>
+
+               <a id="list-projected-list" data-toggle="list"
+                style = "padding-bottom: 19px;background: #495057;color: white;padding-left: 3%;padding-top: 19px;font-weight: bolder;margin-top:3px"
+               class="nav-item nav-link" href="#list-projected" role="tab" aria-controls="projected">
+               <span style="padding-left: 10%;">
+                <i style="color: red;" class="fa fa-window-close-o" aria-hidden="true"></i> Rejected Projects</span></a>
 
             <a id="list-notification-list" data-toggle="list"
-                style = "padding-bottom: 19px;background: #495057;color: white;text-align: center;padding-top: 19px;font-weight: bolder;margin-top:3px"
+                style = "padding-bottom: 19px;background: #495057;color: white;padding-top: 19px;font-weight: bolder;margin-top:3px"
                class="nav-item nav-link" href="#list-notification" role="tab" aria-controls="notification">
-                <i style="color:red;margin-right:9px" class="fa fa-bell"></i> Notifications</a>
+               <span style="padding-left: 10%;">
+                <i style="color:green;margin-right:9px" class="fa fa-bell"></i> Notifications</span></a>
 
             <a id="list-uploads-list" data-toggle="list"
-                style = "padding-bottom: 19px;background: #495057;color: white;text-align: center;padding-top: 19px;font-weight: bolder;margin-top:3px"
+                style = "padding-bottom: 19px;background: #495057;color: white;;padding-top: 19px;font-weight: bolder;margin-top:3px"
                class="nav-item nav-link" href="#list-uploads" role="tab" aria-controls="uploads">
-                Uploaded files</a>
+               <span style="padding-left: 10%;">
+               <i style="color: green;" class="fa fa-download" aria-hidden="true"></i> Uploaded files</span></a>
 
             <a id="list-progress-list" data-toggle="list"
-                style = "padding-bottom: 19px;background: #495057;color: white;text-align: center;padding-top: 19px;font-weight: bolder;margin-top:3px"
+                style = "padding-bottom: 19px;background: #495057;color: white;padding-top: 19px;font-weight: bolder;margin-top:3px"
                class="nav-item nav-link" href="#list-progress" role="tab" aria-controls="progress">
-                <i style="color:red;margin-right:9px" class="fa fa-spinner"></i>Group Progress</a>
+               <span style="padding-left: 10%;">
+                <i style="color:green;margin-right:9px" class="fa fa-spinner"></i> Group Progress</span></a>
 
             <a id="list-chat-list" data-toggle="list"
-               style = "padding-bottom: 19px;background: #495057;color: white;text-align: center;padding-top: 19px;font-weight: bolder;margin-top:3px"
+               style = "padding-bottom: 19px;background: #495057;color: white;padding-top: 19px;font-weight: bolder;margin-top:3px"
                class="nav-item nav-link" href="#list-chat" role="tab" aria-controls="chat">
-                Chat</a>
+               <span style="padding-left: 10%;">
+               <i style="color: green;" class="fa fa-comments" aria-hidden="true"></i> Chat </span></a>
         </div>
     </div>
 
@@ -103,17 +115,46 @@ $(document).ready(function(){
                         Group Project </h4>
 
                 {% for project in projects %}
-                
+                 {% ifequal project.status 'approved' %}
                 <h5 style="margin-top:3px;text-align: center">title : <a href="#">{{ project.project_title}}</a>
                 </h5>
                 <h5 >Description :</h5> {{ project.project_description}}
                 <h5>Project status: <span class="text-success">{{project.status}}</span> </h5>
                 
-                <p><a style="padding:0px" href="{% url 'approve_project' project.pk %}" class="btn btn-outline-success btn-sm text-primary">Approve project</a> <a style="padding:0px" href="{% url 'reject_project' project.pk %}" class="btn btn-outline-danger btn-sm text-info">reject project</a></p>
+                <p> <a style="padding:0px" href="{% url 'reject_project' project.pk %}" class="btn btn-outline-danger btn-sm text-info">reject project</a></p>
      
                 <br>
                 <hr>
                 <br>
+                {% endifequal %}
+                {% endfor %}
+                
+
+            </div>
+
+            <!-- rejected project -->
+            <div class="tab-pane fade" id="list-projected" role="tabpanel" aria-labelledby="list-projected-list"
+                 style="margin-left:10px;margin-right:7px;">
+
+                 <h4 style="color:blue;margin-top:50px;margin-bottom:20px ">
+                     Group Name : {{group}}</h4>
+
+                     <h4 style="margin-top:3px;text-align: center;background: red;padding: 10px; color: white;">
+                        Rejected project is no longer active! </h4><br>
+
+                {% for project in projects %}
+                 {% ifequal project.status 'Project was rejected' %}
+                <h5 style="margin-top:3px;text-align: center">title : <a href="#">{{ project.project_title}}</a>
+                </h5>
+                <h5 >Description :</h5><h4 class="text-muted">{{ project.project_description}}</h4><br>
+                <h5>Project status: <span class="text-success">{{project.status}}</span> </h5>
+                
+                <p><a style="padding:0px" href="{% url 'approve_project' project.pk %}" class="btn btn-outline-success btn-sm text-primary">Approve project</a></p>
+     
+                <br>
+                <hr>
+                <br>
+                {% endifequal %}
                 {% endfor %}
                 
 
@@ -124,7 +165,7 @@ $(document).ready(function(){
 
             </div>
 
-            <!--        uploads-->
+            <!--        uploaded-->
             <div class="tab-pane fade" id="list-uploads" role="tabpanel" aria-labelledby="list-uploads-list">
                 <h4 style="margin-top:3px;text-align: center;background: #71e1e1;padding: 10px;">
                     Project Files Submitted For Progress Purpose</h4>
@@ -146,8 +187,8 @@ $(document).ready(function(){
                         
                         <tr>
                             <td>{{ pro.files_type}}</td>
-                            <td>{{ pro.file_description}}</td>
-                            <td><a class="btn btn-sm btn-info" href="{{ pro.file_description}}" download="">Download</a></td>
+                            <td><a href="{{ pro.file_description.url }} " target = '-blank'><i style="color: black; font-size: 25px;" class="fa fa-print" aria-hidden="true"></i></a></td>
+                            <td><a class="btn btn-sm btn-info" href="{{ pro.file_description.url }}" download=""> <i class="fa fa-cloud-download" aria-hidden="true"></i> Download</a></td>
                             <td><span class="text-primary">{{pro.status}}</span></td>
                             <td>{{pro.created_at}}</td>
                             <td><a class="btn btn-sm btn-info" href="{% url 'approve_files' pro.pk %}" >Approve</a>|<a class="btn btn-sm btn-danger" href="{% url 'reject_files' pro.pk %}">reject</a></td>
@@ -161,104 +202,24 @@ $(document).ready(function(){
 
         </div>
             <!--        progress-->
-            <div class="tab-pane fade" id="list-progress" role="tabpanel" aria-labelledby="list-progress-list">
+        <div class="tab-pane fade" id="list-progress" role="tabpanel" aria-labelledby="list-progress-list">
 
-                <!-- <nav class="navbar navbar-expand-md" style="background:#6c757d;font-weight: 700;">
-
-                    <div class="dropdown">
-                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Project Definition
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Project Title : 5%</a>
-                            <a class="dropdown-item" href="#">Project Proposal : 10%</a>
-                            <a class="dropdown-item" href="#">Project (ERD) : 10%</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#"> Total Mark : 25%</a>
-                        </div>
-                    </div>
-
-                    <div class="dropdown">
-                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Project Planning
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Project Scope : 10%</a>
-                            <a class="dropdown-item" href="#">Time Management : 5%</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#"> Total Mark : 20%</a>
-                        </div>
-                    </div>
-
-                    <div class="dropdown">
-                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Project Design
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Project Backend : 10%</a>
-                            <a class="dropdown-item" href="#">Project Frontend : 10%</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#"> Total Mark : 20%</a>
-                        </div>
-                    </div>
-
-                    <div class="dropdown">
-                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Project Controlling
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Project Test : 10%</a>
-                            <a class="dropdown-item" href="#">Deployment : 10%</a>
-                            <a class="dropdown-item" href="#">Project Book : 15%</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#"> Total Mark : 35%</a>
-                        </div>
-                    </div>
-
-                </nav>
-
+            <!-- <div class="card">  -->
                 
+                <div class="col-sm-4 mt-3 mb-4" style="width: 90%;" >
+                    <canvas id="myChart" style="width: 400px; height:400px"></canvas>
+                </div>
+           <!-- </div>   -->
+        </div>
 
-                <h5 style="color:blue;margin-top:30px "> Group Name : {{group}}</h5>
-                <div class="card card-body">
-			        <table class="table table-sm">
-                        <tr>
-                            <th>Type of File</th>
-                            <th>Date Submitted</th>
-                            <th>Approve</th>
-                            <th>Reject</th>
-                        </tr>
-				{% for pro in progress %}
-                        
-                        <tr>
-                            <td>{{pro.files_type}}</td>
-                            <td>Date Submitted</td>
-                            <td>
-
-
-                                <button class="btn btn-sm btn-info" onclick = "getConfirmation();"> Approve </button>
-                            </td>
-                            <td> <button class="btn btn-sm btn-danger" onclick="deletefunction()"> Delete </button>
-                            </td>
-                        </tr>
-                
-				{% endfor %}
-			</table>
-
-		</div>
-                <br> -->
-            <div class="col-sm-4 mt-3 mb-4" style="width: 90%;" >
-                <canvas id="myChart" style="width: 400px; height:400px"></canvas>
+        <div class="tab-pane fade" id="list-chat" role="tabpanel" aria-labelledby="list-chat-list">
+            <div class="card card-body">
+                <a class="btn btn-outline-success" href="{% url 'chat' %}">Chat with in your group</a>
             </div>
-                
         </div>
 
             <!--        start-->
-            <div class="tab-pane fade show active" id="list-dashboard" role="tabpanel"
+        <div class="tab-pane fade show active" id="list-dashboard" role="tabpanel"
                  aria-labelledby="list-dashboard-list">
 
                 {% for customs in custom %}

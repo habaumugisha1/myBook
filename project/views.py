@@ -59,13 +59,21 @@ def groups(request, pk, *args, **kwargs):
 
 @login_required
 def department_details(request, pk):
+    progres = 0
+    group = 0
+    p = 0
+    project_progress = 0
+    label = 0
     departments = Department.objects.get(pk=pk)
-    groups = Groups.objects.filter(department_id=departments)
+    groups = Groups.objects.filter(department_id=departments).order_by('id')
     supervisors = Supervisor.objects.filter(group_id__in=groups)
-    projects = Project.objects.filter(group_id__in=groups)
+    projects = Project.objects.filter(group_id__in=groups).order_by('id')
     customs = CustomerUser.objects.filter(department=departments)
     students = StudentGroup.objects.filter(department_name=departments)
     group_progress = GroupProgress.objects.filter(group_id__in=groups)
+
+    for pro in group_progress:
+        group = pro.group_id
     
     for project in projects:
         if project.progress > 0:
@@ -77,30 +85,19 @@ def department_details(request, pk):
         print(progres)
     arr =[progres]
     print(arr)
-        # for fil in groupp.progress:
-        #     print(fil)
-    #     progres = [int(groupp.progress)]
-    #     total = sum(progres)
-    # print(progres)
-        
-    # for ele in range(0, len(progres)):
-    #     total = total + progres[ele]
-    # print(len(progres))
-        # print("I am here")
 
     for project in projects:
         if project.status=='approved':
             p=project
         #    project
             print(p)
-        # print(project)
-
 
     context = {
         'departments': departments,
         'projects': projects,
         'supervisors': supervisors,
         'groups': groups,
+        'group':group,
         'customs': customs,
         'students': students,
         'p':p,
@@ -192,17 +189,19 @@ class StudentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 @login_required
 def dean_department_detail(request, pk):
     departments = Department.objects.get(pk=pk)
-    groups = Groups.objects.filter(department_id=departments)
+    groups = Groups.objects.filter(department_id=departments).order_by('id')
     groups_numbers=groups.count()
     # supervisors = Supervisor.objects.filter(department__in=departments)
-    projects = Project.objects.filter(group_id__in=groups)
+    projects = Project.objects.filter(group_id__in=groups).order_by('id')
+    project_count=projects.count()
     customs = CustomerUser.objects.filter(department=departments)
     students = StudentGroup.objects.filter(department_name=departments)
-
+     
     context = {
         'departments': departments,
         'groups_numbers':groups_numbers,
         'projects': projects,
+        'project_count':project_count,
         # 'supervisors': supervisors,
         'groups': groups,
         'customs': customs,
@@ -213,6 +212,8 @@ def dean_department_detail(request, pk):
 
 @login_required
 def singleGroup(request, pk, *args, **kwargs):
+    project_progress = 0
+    label = 0
     groups = Groups.objects.get(pk=pk)
     projects = Project.objects.filter(group_id=groups)
     supervisors = Supervisor.objects.filter(group_id=groups)
@@ -225,13 +226,13 @@ def singleGroup(request, pk, *args, **kwargs):
             project_progress=project.progress
     
     context = {
-        'project_progress':project_progress,
-        'label':label,
         'projects': projects,
         'supervisors': supervisors,
         'groups': groups,
         'member': member,
         'progress': progress,
+        'project_progress':project_progress,
+        'label':label,
         }
 
     return render(request, 'group/group.html', context=context )
@@ -277,10 +278,14 @@ def approve_file(request, pk, *args, **kwargs):
     if group_file.files_type == 'project_proposal':
         group_file.progress=25
     elif group_file.files_type == 'project_erd':
-        group_file.progress=15 
-    # project_proposal
-    # project_erd
-    # group_file.progress=25
+        group_file.progress=15
+    elif group_file.files_type == 'chapter I':
+        group_file.progress=10
+    elif group_file.files_type == 'chapter II':
+        group_file.progress=15
+    elif group_file.files_type == 'chapter III':
+        group_file.progress=15
+         
     data=group_file.progress
     lebels=group_file.files_type
     group_file.save(update_fields=["status", "progress"]) 
@@ -304,8 +309,6 @@ def reject_file(request, pk, *args, **kwargs):
     data=group_file.progress
     lebels=group_file.files_type
     group_file.save(update_fields=["status", "progress"]) 
-    # print(data)
-    # print(group_file.files_type)
     
     context ={
         'appro':appro,
@@ -336,17 +339,21 @@ def groupProgress(request):
 
 @login_required
 def group_detail(request, pk, *args, **kwargs):
+    label =0
+    project_progress = 0
+    labels = 0
+    data = 0
     group = Groups.objects.get(pk=pk)
     custom = CustomerUser.objects.filter(username=request.user)
     group_progress=GroupProgress.objects.filter(group_id=group)
     students = StudentGroup.objects.filter(group_id=group)
     teachers = Supervisor.objects.filter(supervisor_name=request.user)
-    projects = Project.objects.filter(group_id=group)
+    projects = Project.objects.filter(group_id=group).order_by('id')
 
     for project in projects:
         if project.progress >0:
-            project_progress= project.progress
             label=project.topic
+            project_progress= project.progress
             print(project_progress, label)
 
     for pro in group_progress:
@@ -415,6 +422,7 @@ def create_group(request):
 def hodSupervisorDetail(request, pk):
     customs_user = CustomerUser.objects.get(pk=pk)
     groups = Groups.objects.all()
+
     students = StudentGroup.objects.all()
     supervisors = Supervisor.objects.all()
 

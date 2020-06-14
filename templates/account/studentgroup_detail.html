@@ -5,21 +5,23 @@
     <div class="row" style="max-width:100%;margin-top:20px">
         <div class="col-3">
             <img class="rounded-circle article-img" style="width:100px;height:110px"
-         src="{{ object.student_name.profile.image.url }}">
+         src="{{ object.student_name.profile.image.url }}"><br>
+         <h2>{{object.student_name.role}}</h2>
+
         </div>
         <div class="col">
             <table class="table table-sm">
         <tr>
-            <th>FirstName</th>
-            <td>{{ object.student_name.username.first_name }}</td>
+            <th>First Name</th>
+            <td>{{ object.student_name.first_name }}</td>
         </tr>
         <tr>
             <th>Last Name</th>
-            <td>{{ object.student_name.username.last_name }}</td>
+            <td>{{ object.student_name.last_name }}</td>
         </tr>
         <tr>
             <th>Email</th>
-            <td>{{ object.student_name.username.email }}</td>
+            <td>{{ object.student_name.email }}</td>
         </tr>
         <tr>
             <th>Username</th>

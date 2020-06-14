@@ -2,25 +2,61 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from project.models import FinalProject
-from account.models import FinalProjects
+from project.models import FinalProject, School, Department
+from account.models import FinalProjects, Supervisor
 from account.forms import AssignSupervisorToGroup, AssignHodToDepartment
 from project.filters import PostFilter
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
+def is_valid_queryparam(param):
+    return param !="" and param is not None
 
 def project(request):
     pros = FinalProjects.objects.all()
+    schools = School.objects.all()
+    departments = Department.objects.all()
+    supervisors = Supervisor.objects.all()
+
+    title_contains = request.GET.get('title_contains')
+    keywords = request.GET.get('keyword')
+    technology = request.GET.get('technology')
+    supervisor = request.GET.get('supervisor')
+    school = request.GET.get('school')
+    department = request.GET.get('department')
+    
+    if title_contains != "" and title_contains is not None:
+        pros = pros.filter(title__iexact=title_contains)
+
+    if keywords != "" and keywords is not None:
+        pros = pros.filter(keywords__icontains=keywords) 
+
+    if technology != "" and technology is not None:
+        pros = pros.filter(technology__icontains=technology)
+
+    if is_valid_queryparam(supervisor) and supervisor != "choose ...":
+        pros = pros.filter(supervisors__name = supervisor)
+
+    if is_valid_queryparam(department) and department != "choose ...":
+        pros = pros.filter(departments__name = department)
+
+    if is_valid_queryparam(school) and school != "choose ...":
+        pros = pros.filter(schools__name = school)
+    
+
+
     counter_pro = pros.count()
-    filters = PostFilter(request.GET, queryset=pros)
-    pros = filters.qs
+    # filters = PostFilter(request.GET, queryset=pros)
+    # pros = filters.qs
     counter_filter = pros.count()
     context = {
         'pros': pros,
-        'filters': filters,
+        # 'filters': filters,
         'counter_filter': counter_filter,
         'counter_pro': counter_pro,
+        'schools':schools,
+        'departments':departments,
+        'supervisor':supervisor
     }
     paginate_by = 2
     return render(request, 'project/projects.html', context=context)
@@ -116,3 +152,5 @@ def assign_hod_to_depart(request):
             messages.warning(request, 'Sorry, Hod not assigned to Department, try again.Error : {}'.format(e))
 
     return render(request, 'dean/assign_hod.html', {'form': form})
+
+
