@@ -1,0 +1,1 @@
+web: gunicorn FYP_Management_System.wsgi
