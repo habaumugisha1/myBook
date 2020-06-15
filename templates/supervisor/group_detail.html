@@ -121,7 +121,7 @@ $(document).ready(function(){
                 <h5 >Description :</h5> {{ project.project_description}}
                 <h5>Project status: <span class="text-success">{{project.status}}</span> </h5>
                 
-                <p> <a style="padding:0px" href="{% url 'reject_project' project.pk %}" class="btn btn-outline-danger btn-sm text-info">reject project</a></p>
+                <p><a style="padding:0px" href="{% url 'approve_project' project.pk %}" class="btn btn-outline-success btn-sm text-primary">Approve project</a>  <a style="padding:0px" href="{% url 'reject_project' project.pk %}" class="btn btn-outline-danger btn-sm text-info">reject project</a></p>
      
                 <br>
                 <hr>
