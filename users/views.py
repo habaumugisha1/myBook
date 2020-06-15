@@ -42,7 +42,7 @@ def customRegisterpage(request):
             user = form.save()
             # auth_login(request, user)
             messages.success(request, 'Account created!')
-            return HttpResponseRedirect(reverse('home'))
+            return HttpResponseRedirect(reverse('register'))
 
     else:
         form = CustomRegisterForm()
