@@ -223,18 +223,22 @@ $(document).ready(function(){
                  aria-labelledby="list-dashboard-list">
 
                 {% for customs in custom %}
-                {% if customs.username == user %}
+                <!-- {% if customs.username == user %}
                 <div class="row" style="color:green;margin-left:20px;max-width:100%">
-                    <h4 align="center">hi, <i style="color:black">{{ user.username }}</i> This is Your Group</h4>
+                    <h4 align="center">hi, <i style="color:black">{{ user.username.first_name }} {{ user.username.last_name }}</i> This is Your Group</h4>
 
                     
                 </div>
-                {% endif %}
+                {% endif %} -->
                 
                 {% if customs.role == 'supervisor' %}
                 
 
                 <div class="card-body">
+                    {% if customs.username == user %}
+                         <i style="color:green">{{ user.username.first_name }} {{ user.username.last_name }}</i>
+                    {% endif %}
+
                     <a href="#"
                        class="btn btn-primary btn-lg btn-block">
                         <i style="color:black">Group Name : </i> {{group}} </a></div>
