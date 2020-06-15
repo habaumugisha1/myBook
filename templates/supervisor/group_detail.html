@@ -115,7 +115,7 @@ $(document).ready(function(){
                         Group Project </h4>
 
                 {% for project in projects %}
-                 {% ifequal project.status 'approved' and 'Pending ...' %}
+                 {% ifequal project.status 'approved' or 'Pending ...' %}
                 <h5 style="margin-top:3px;text-align: center">title : <a href="#">{{ project.project_title}}</a>
                 </h5>
                 <h5 >Description :</h5> {{ project.project_description}}
