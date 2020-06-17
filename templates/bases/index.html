@@ -45,13 +45,14 @@
 <div>
 <nav class="navbar navbar-expand-md navbar-light bg-light"
      style="background:#4d7db0!important;max-width:100%; border-radius: 0px;">
+     <div class="container-fluid">
      <a class="navbar-brand" href="{% url 'home' %}"><img style="width:140px;height:50px; margin-top: -9%;" src="{% static 'images/ur-logo.jpg' %}"></a>
-    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarResponsive">
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-        <div class="navbar-nav" >
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+        <div class="navbar-nav ml-auto" >
             <a href="{% url 'home' %}" style="color:white;font-weight:bold" class="nav-item nav-link">
                 <i style="color:black;margin-right:9px" class="fa fa-home"> </i>Home</a>
             {% if user.is_authenticated %}
@@ -90,6 +91,7 @@
             <a href="{% url 'login' %}" class="nav-item nav-link" style="color:white;font-weight:bold">Login</a>
         </div>
     {%  endif %}
+  </div>
 </nav>
 
 <!-- <nav class="navbar navbar-expand-md navbar-light" style="background: #4d7db038; margin-top: -2%;">
