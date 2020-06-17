@@ -131,3 +131,15 @@ ul ul a {
     color: #fff;
     transition: all 0.3s;
 }
+
+.navbar {
+    padding: .8rem;
+}
+
+.navbar-nav a {
+    padding-right: 20px;
+}
+.carousel-inner img {
+    width :100%;
+    height: 100%;
+}
