@@ -50,7 +50,7 @@ $(document).ready(function(){
 {% block content %}
 <div>
     <div class="list-group" id="list-tab" role="tablist">
-        <nav class="navbar navbar-expand-md navbar-light" style="background:#203447;align:center">
+        <nav class="navbar navbar-expand-md navbar-light" style="background:#203447;border-radius: 0px;margin-top: -8%;">
 
             <a id="list-chat-list" data-toggle="list" style="margin-left:20px"
                href="#list-chat" role="tab" aria-controls="chat" class="nav-item nav-link">
@@ -117,13 +117,13 @@ $(document).ready(function(){
                             <tr>
                                 <th scope="row" style="color:red">{{departments.department_name}}</th>
                                 <td>
-                                    <h5 class="card-title">
+                                    <h4 class="card-title" style="color: white;">
                                         {% for custom in customs %}
                                         {% if custom.role == 'hod' %}
                                         {{ custom.username }}
 <!--                                        {{ user.last_name }}-->
                                         {% endif %}
-                                        {% endfor %} </h5>
+                                        {% endfor %} </h4>
                                 </td>
                             </tr>
 
@@ -177,7 +177,7 @@ $(document).ready(function(){
                                 <th scope="col">Id</th>
                                 <th scope="col">Group Names</th>
                                 <th>Modify</th>
-                                <th></th>
+                                <th>Details</th>
                             </tr>
                             </thead>
                             <tbody>
