@@ -73,9 +73,9 @@ $(document).ready(function(){
                href="#list-project" role="tab" aria-controls="project">
                 Project</a>
 
-            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list"
+            <!-- <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list"
                href="#list-settings" role="tab" aria-controls="settings">
-                Daily Task</a>
+                Daily Task</a> -->
 
             <a class="list-group-item list-group-item-action" id="list-uploads-list" data-toggle="list"
                href="#list-uploads" role="tab" aria-controls="uploads">
@@ -157,7 +157,7 @@ $(document).ready(function(){
             </div>
             <!-- activity -->
 
-            <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
+            <!-- <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
                 <div class="card" style="width:54rem;">
                     <div class="card-body">
                         <h5 class="card-title">Daily Plan Activities</h5>
@@ -179,7 +179,7 @@ $(document).ready(function(){
                         <a href="#" class="btn btn-secondary">Add Activities</a>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- files uploads -->
             <div class="tab-pane fade" id="list-uploads" role="tabpanel" aria-labelledby="list-uploads-list">
@@ -189,14 +189,14 @@ $(document).ready(function(){
                         <table class="table" style="margin-top:20px">
                             <tr>
                                 <td style="background:#4d7db0;"> files Type</td>
-                                <td style="background:#4d7db0;"> Print</td>
+                                <td style="background:#4d7db0;"> Documents</td>
                                 <td style="background:#4d7db0;"> Status</td>
                                 <td style="background:green;"><a href="#">Download</a></td>
                             </tr>
                             {% for file in progress %}
                             <tr>
                                 <td>{{ file.files_type }}</td>
-                                 <td> <a href="{{ file.file_description.url }} " target = '-blank'><i class="fa fa-file-pdf-o text-danger" aria-hidden="true"></i> Print</a></td>
+                                 <td> <a href="{{ file.file_description.url }} " target = '-blank'><i class="fa fa-file-pdf-o text-danger" aria-hidden="true"></i>{{file.file_title}}</a></td>
                                  <td class="text-success">{{ file.status }}</td>
                                 <td><a href="{{ file.file_description.url }}" download=""><i class="fa fa-cloud-download" aria-hidden="true"></i> download </a></td>
                             </tr>

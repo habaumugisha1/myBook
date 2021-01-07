@@ -7,14 +7,17 @@ from django. contrib import messages
 from django.contrib.auth.decorators import login_required
 from account.models import Coordinator, Dean, Hod, Supervisor, StudentGroup, FinalProjects
 from users.models import CustomerUser, Profile
+from project.models import Annoucements
 
 
 def home(request):
     mapbox_access_token = 'pk.eyJ1IjoiMjE3MDA0NjQ0IiwiYSI6ImNrYTg2dTRhcTBhOXoydG1rdmRudWwyd3cifQ.WSQ6Oy9NcqmxiXkNYJ3UkQ'
     project = FinalProjects.objects.all()
+    annoucements = Annoucements.objects.all()
     context = {
         'mapbox_access_token':mapbox_access_token,
-        'project': project
+        'project': project,
+        'annoucements':annoucements
     }
     return render(request, 'home.html', context=context)
 

@@ -10,12 +10,13 @@
             <div class="card-body">
               <h3 class="card-title">My Groups</h3>
               <hr />
-              {%for super in supervisors %}
-              <!-- {{super.supervisor_name}} -->
-             <h2> <a href="{% url 'group_detail' super.pk %}"
+              {%for group in groups%}
+              <h2> <a href="{% url 'group_detail' group.pk %}"
                 class="text-primary">
-                  {{super.group_id}} </a></h2>
-              {% endfor %}
+                  {{group.group_name}} </a></h2>
+              <!-- {{group.group_name}} -->
+              {%endfor%}
+              
             </div>
             
           </div>

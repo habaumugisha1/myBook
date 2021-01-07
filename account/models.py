@@ -52,14 +52,15 @@ class StudentGroup(models.Model):
 class FinalProjects(models.Model):
     project_type = (
         ("data_science", "data_science"),
-        ("project_proposal", "Project Proposal"),
-        ("project_erd", "Project (ERD)"),
-        ("time_management", "Time Management"),
+        ("moble app", "Moble App"),
+        ("e-commerce", "E-commerce"),
+        ("technology", "Tchnology"),
+        ("mechanical", "Mechanical"),
+        ("electrical", "Electrical"),
     )
     project_type = models.CharField(max_length=100, choices=project_type, default='data_science')
     title = models.CharField(max_length=100)
     introduction = models.TextField(default=False)
-    content = models.TextField()
     problem_statement = models.TextField(default=False)
     scope = models.TextField(default=False)
     keywords = models.CharField(max_length=300)

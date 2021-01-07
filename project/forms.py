@@ -1,4 +1,4 @@
-from project.models import Groups, GroupProgress, Department, Project
+from project.models import Groups, GroupProgress, Department, Project, Annoucements
 from django import forms
 
 
@@ -23,3 +23,7 @@ class CreateDepartment(forms.ModelForm):
     class Meta:
         model = Department
         fields = ['school_id',  'department_name']
+class CreateAnnoucements(forms.ModelForm):
+    class Meta:
+        model = Annoucements
+        fields = ['title', 'description']

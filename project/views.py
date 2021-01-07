@@ -1,7 +1,7 @@
 from account.models import StudentGroup, Dean, Hod, Supervisor
-from project.models import School, Department, Groups, Project, GroupProgress
+from project.models import School, Department, Groups, Project, GroupProgress, Annoucements
 from users.models import CustomerUser
-from .forms import AddGroupForm, AddGroupProgressForm, CreateDepartment, ApproveProject
+from .forms import AddGroupForm, AddGroupProgressForm, CreateDepartment, ApproveProject, CreateAnnoucements 
 from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -45,12 +45,14 @@ def groups(request, pk, *args, **kwargs):
     users = User.objects.get(pk=pk)
     custom = CustomerUser.objects.filter(username=users)
     supervisors = Supervisor.objects.filter(supervisor_name=users)
+    for supervisor in supervisors:
+        groups = Groups.objects.filter(id=supervisor.group_id.id)
     
-    # print(supervisor)
+    print(groups)
     context={
         'users':users,
         'custom':custom,
-        # 'groups':groups, 
+        'groups':groups, 
         'supervisors':supervisors
 
     }
@@ -67,10 +69,26 @@ def department_details(request, pk):
     departments = Department.objects.get(pk=pk)
     groups = Groups.objects.filter(department_id=departments).order_by('id')
     supervisors = Supervisor.objects.filter(group_id__in=groups)
+    for supervisor in supervisors:
+        students = StudentGroup.objects.filter(group_id=supervisor.group_id)
     projects = Project.objects.filter(group_id__in=groups).order_by('id')
-    customs = CustomerUser.objects.filter(department=departments)
-    students = StudentGroup.objects.filter(department_name=departments)
-    group_progress = GroupProgress.objects.filter(group_id__in=groups)
+    customs = CustomerUser.objects.filter(department=departments).filter(role = 'student')
+    superCustoms = CustomerUser.objects.filter(department=departments)
+    # for group in groups:
+    group_progress = GroupProgress.objects.filter(group_id=group)
+        # print(group)
+
+        # for progeress in group_progress:
+        #     if(progeress.group_id == group):
+        #         total = sum([progeress.progress])
+        #         print(progeress.progress)
+        #         print(total)
+            
+        # print(group_progress.progress)
+    #(department_name=departments)
+
+    # print(group_progress.progress)
+
 
     for pro in group_progress:
         group = pro.group_id
@@ -82,9 +100,9 @@ def department_details(request, pk):
 
     for groupp in group_progress:
         progres = groupp.progress
-        print(progres)
+        # print(progres)
     arr =[progres]
-    print(arr)
+    # print(arr)
 
     for project in projects:
         if project.status=='approved':
@@ -100,6 +118,7 @@ def department_details(request, pk):
         'group':group,
         'customs': customs,
         'students': students,
+        'superCustoms':superCustoms,
         'p':p,
         'project_progress':project_progress,
         'label':label,
@@ -270,21 +289,20 @@ def reject_project(request, pk, *args, **kwargs):
     return render(request, "hod/reject_project.html", context)
 
 def approve_file(request, pk, *args, **kwargs): 
-  
-    # fetch the object related to passed id 
-    appro = Project.objects.get(pk=pk)
     group_file=GroupProgress.objects.get(pk=pk)
     group_file.status='approved'
-    if group_file.files_type == 'project_proposal':
-        group_file.progress=25
-    elif group_file.files_type == 'project_erd':
-        group_file.progress=15
-    elif group_file.files_type == 'chapter I':
-        group_file.progress=10
-    elif group_file.files_type == 'chapter II':
-        group_file.progress=15
-    elif group_file.files_type == 'chapter III':
-        group_file.progress=15
+    group_file.progress=25
+    # if group_file.files_type == 'Project Proposal':
+    #     group_file.progress=25
+    #     print(group_file.progress)
+    # elif group_file.files_type == 'Project (ERD)':
+    #     group_file.progress=15
+    # elif group_file.files_type == 'chapter I':
+    #     group_file.progress=10
+    # elif group_file.files_type == 'chapter II':
+    #     group_file.progress=15
+    # elif group_file.files_type == 'chapter III':
+    #     group_file.progress=15
          
     data=group_file.progress
     lebels=group_file.files_type
@@ -302,16 +320,16 @@ def approve_file(request, pk, *args, **kwargs):
     return render(request, "supervisor/approve_file.html", context) 
 
 def reject_file(request, pk, *args, **kwargs):
-    appro = Project.objects.get(pk=pk)
+    # appro = Project.objects.get(pk=pk)
     group_file=GroupProgress.objects.get(pk=pk)
-    group_file.status='pending...'
+    group_file.status='Rejected'
     group_file.progress=0
     data=group_file.progress
     lebels=group_file.files_type
     group_file.save(update_fields=["status", "progress"]) 
     
     context ={
-        'appro':appro,
+        # 'appro':appro,
         'data':data,
         'lebels':lebels,
         'group_file':group_file
@@ -349,7 +367,8 @@ def group_detail(request, pk, *args, **kwargs):
     students = StudentGroup.objects.filter(group_id=group)
     teachers = Supervisor.objects.filter(supervisor_name=request.user)
     projects = Project.objects.filter(group_id=group).order_by('id')
-
+    for pt in group_progress:
+        print(pt.file_description)
     for project in projects:
         if project.progress >0:
             label=project.topic
@@ -450,3 +469,22 @@ def create_department(request):
 
     return render(request, 'hod/create_department.html', {'form': form})
 
+def create_annoucements(request):
+    form = CreateAnnoucements(request.POST)
+    if request.method == 'POST':
+    
+        if form.is_valid():
+            announcement = form.save(commit=False)
+            announcement.save()
+            messages.success(request, 'Announcement was created successfully')
+
+    else:
+        form = CreateAnnoucements()
+    return render(request, 'project/announcement.html', {'form': form})
+
+def single_annoucement(request, pk):
+    announcement = Annoucements.objects.get(pk=pk)
+    context={
+        'announcement': announcement
+    }
+    return render(request, 'project/annoucement_details.html', context=context)

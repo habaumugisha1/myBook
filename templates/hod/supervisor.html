@@ -26,36 +26,13 @@
                             Email : {{ supervisor.group_id.group_email }} <br>
                             Department : {{ supervisor.group_id.department_id }} <br>
                            School : {{ supervisor.group_id.department_id.school_id }} <br>
+                           <p><a style="padding:5px" href="{% url 'hod_group_detail' supervisor.group_id.pk%}" class="btn btn-outline-success btn-sm text-primary mt-4">More details</a></p>
                        {% endif %}
-
+<!-- url 'approve_project' project.pk -->
+                  {% endfor %}
                     </h4>
                     
-                
-                <h3 class="navbar navbar-expand-md navbar-light bg-primary" style="height: 4%; color: white;text-align: center;">Group Members</h3>
-                <table class="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">First Name</th>
-                        <th scope="col">Last Name</th>
-                        <th scope="col">Group</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                        {% for student in students %}
-                       {% if student.group_id == supervisor.group_id %}
-                      <tr>
-                        <th scope="row">{{student.id}}</th>
-                        <td>{{student.student_name.first_name}}</td>
-                        <td>{{student.student_name.last_name}}</td>
-                        <td> {{student.group_id}}</td>
-                      </tr>
-                      {% endif %}
-                      {% endfor %}
-                    </tbody>
-                  </table>
                   <hr style="color: green;">
-                  {% endfor %}
         </div>
 
     </div>

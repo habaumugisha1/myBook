@@ -1,0 +1,21 @@
+
+{% extends 'bases/index.html' %}
+<!-- {% load widget_tweaks %} -->
+{% load static %}
+{% block content %}
+  <div class="row justify-content-center mt-8" style="max-width:100%">
+    <div class="col-lg-6 col-md-6 col-sm-8">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title">New announcement</h3>
+          <form method="post" novalidate>
+            {% csrf_token %}
+            <!-- {{ form.as_p }} -->
+            {% include 'users/form.html' %}
+            <button type="submit" class="btn btn-primary btn-block">Announce</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

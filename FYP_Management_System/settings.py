@@ -95,10 +95,14 @@ CHANNEL_LAYERS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd8ev6t3jqlmgkv',
-        'USER': 'pjurpovdqoorjn',
-        'PASSWORD': '0393ba4bd130730936a8b0b077fb6d4002af3d7551f6908e657e38113c829084',
-        'HOST': 'ec2-52-87-135-240.compute-1.amazonaws.com',
+        'NAME': 'fypmonitoring',
+        # 'd8ev6t3jqlmgkv',
+        'USER': 'postgres',
+        # 'pjurpovdqoorjn',
+        'PASSWORD': 'password',
+        # '0393ba4bd130730936a8b0b077fb6d4002af3d7551f6908e657e38113c829084',
+        'HOST': 'localhost',
+        # 'ec2-52-87-135-240.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }

@@ -1,0 +1,25 @@
+{% extends 'bases/index.html' %}
+{% block content %}
+
+<div class="container" style="margin-top:30px">
+
+<div class="row">
+     <a class="btn btn-secondary btn-sm mt-1 mb-1" href="#" style="float:right;margin-right:30px">Update</a>
+    <a class="btn btn-danger btn-sm mt-1 mb-1" href="#" style="float:right;margin-right:10px">Delete</a>
+
+</div>
+     <div class="card card-body">
+         <div style="margin-top:15px">
+            <h3 class="article-content" style="text-align:center">{{ announcement.title }} </h3>
+         </div>
+         <div style="margin-top:15px">
+            <p class="article-content text-dark" style="font-size: 2rem;">{{ announcement.description }} </p>
+         </div>
+
+         <div style="margin-top:15px">
+            <p class="article-content"> announced on: <span class="text-success"> {{ announcement.created_at }} </span></p>
+         </div>
+		</div>
+</div>
+
+{% endblock content %}

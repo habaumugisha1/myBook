@@ -35,14 +35,9 @@ class GroupProgress(models.Model):
         ("project_title", "Project Title"),
         ("project_proposal", "Project Proposal"),
         ("project_erd", "Project (ERD)"),
-        ("time_management", "Time Management"),
-        ("project_scope", "Project scope"),
-        ("project_cost", "Project Cost"),
-        ("project_backend", "Project Backend"),
-        ("project_frontend", "Project Frontend"),
-        ("project_test", "Project Test"),
-        ("deployment", "Deployment"),
-        ("project_book", "Project Book"),
+        ("chapter I", "chapter I"),
+        ("chapter II", "chapter II"),
+        ("chapter III", "chapter III"),
     )
     group_id = models.ForeignKey(Groups, related_name='group_progress', on_delete=models.CASCADE)
     files_type = models.CharField(max_length=100, choices=files_choices, default='project_title')
@@ -94,3 +89,10 @@ class FinalProject(models.Model):
     def get_absolute_url(self):
         return reverse('post-detail', kwargs={'pk': self.pk})
 
+class Annoucements(models.Model): 
+    title = models.CharField(max_length=2000)
+    description = models.TextField(blank=True)
+    created_at = models.DateTimeField(default=datetime.now, blank=True)
+
+    def __str__(self):
+        return self.title

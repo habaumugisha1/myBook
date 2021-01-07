@@ -35,42 +35,14 @@
             <label for="exampleFormControlSelect1">Technology</label>
             <input type="text" class="form-control" id="exampleFormControlInput1" name="technology">
           </div>
-
+          <!-- <div class="form-group">
+            <label for="exampleFormControlSelect1">School</label>
+            <input type="text" class="form-control" id="exampleFormControlInput1" name="school">
+          </div>
           <div class="form-group">
             <label for="exampleFormControlSelect1">Supervisor</label>
-            <select class="form-control" id="exampleFormControlSelect1" style="height: 30px;" name="supervisor">
-              <option>choose ...</option>
-              {% for sup in supervisors %}
-              <option value="{{sup}}">{{sup}}</option>
-              {% endfor %}
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="exampleFormControlSelect1">Department</label>
-            <select class="form-control" id="exampleFormControlSelect1" style="height: 30px;" name="department">
-              <option>choose ...</option>
-
-              {% for department in departments %}
-              <option value="{{department}}">{{department}}</option>
-              {% endfor %}
-              
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="exampleFormControlSelect1">School</label>
-            <select class="form-control" id="exampleFormControlSelect1" style="height: 30px;" name="school">
-              <option>choose ...</option>
-
-              {% for skl in schools %}
-              <option value="{{skl.school_name}}">{{skl.school_name}}</option>
-
-              {% endfor %}
-              
-            </select>
-          </div>
-          
+            <input type="text" class="form-control" id="exampleFormControlInput1" name="supervisor">
+          </div> -->
 
       <div class="form-group row">
         <div class="col-sm-10">
@@ -91,7 +63,7 @@
 
           <article class="media content-section" style="margin:30px">
               <div class="media-body">
-                  <p class="article-content">{{ post.content|truncatechars:460 }} </p>
+                  <p class="article-content text-dark">{{ post.introduction|truncatechars:250 }} </p>
               </div>
           </article>
       {% endfor %}

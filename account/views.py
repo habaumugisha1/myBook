@@ -34,14 +34,14 @@ def project(request):
     if technology != "" and technology is not None:
         pros = pros.filter(technology__icontains=technology)
 
-    if is_valid_queryparam(supervisor) and supervisor != "choose ...":
-        pros = pros.filter(supervisors__name = supervisor)
+    if is_valid_queryparam(supervisor) and supervisor is not None:
+        pros = pros.filter(supervisors__icontains = supervisor)
 
-    if is_valid_queryparam(department) and department != "choose ...":
-        pros = pros.filter(departments__name = department)
+    if is_valid_queryparam(department) and department is not None:
+        pros = pros.filter(departments__icontains = department)
 
-    if is_valid_queryparam(school) and school != "choose ...":
-        pros = pros.filter(schools__name = school)
+    if is_valid_queryparam(school) and school is not None:
+        pros = pros.filter(schools__icontains = school)
     
 
 
@@ -87,7 +87,7 @@ class PostDetailView(DetailView):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = FinalProjects
-    fields = ['project_type', 'title', 'content', 'introduction', 'problem_statement', 'scope',
+    fields = ['project_type', 'title', 'introduction', 'problem_statement', 'scope',
               'keywords', 'technology', 'source_code', 'supervisor', 'school']
 
     def form_valid(self, form):
@@ -97,7 +97,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 class PostUpdateView(LoginRequiredMixin,UserPassesTestMixin, UpdateView):
     model = FinalProjects
-    fields = ['project_type', 'title', 'content', 'introduction', 'problem_statement', 'scope',
+    fields = ['project_type', 'title','introduction', 'problem_statement', 'scope',
               'keywords', 'technology', 'source_code', 'supervisor', 'school']
 
     def form_valid(self, form):

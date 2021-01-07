@@ -5,7 +5,7 @@ from chat import views as chat_views
 from project import views as project_views
 from project.views import StudentUpdateView, StudentCreateView, StudentDetailView, \
     StudentDeleteView, GroupProjectCreateView, GroupProjectDetailView, GroupProjectUpdateView,\
-    GroupProjectDeleteView, approve_project, reject_project, approve_file, groups, reject_file,singleProject
+    GroupProjectDeleteView, approve_project, reject_project, approve_file, groups, reject_file,singleProject, create_annoucements, single_annoucement
 from account import views as account_views
 from account.views import PostListView, PostDetailView, \
     UserPostListView, PostUpdateView, PostDeleteView, PostCreateView
@@ -79,6 +79,8 @@ urlpatterns = [
     path('loggedin', chat_views.loggedin, name="loggedin"),
     path('group/chat/', index, name='chat'),
     path('chat/<str:room_name>/', room, name='room'),
+     path('announcement/', create_annoucements, name='announcement'),
+    path('announcement/<int:pk>/', single_annoucement, name='single_annoucement'),
 ]
 
 
