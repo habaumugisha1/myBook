@@ -44,7 +44,7 @@ a[data-toggle="collapse"] {
     display: block;
     position: absolute;
     top: 25%;
-    right: -20px;
+    right: 0;
     transform: translateY(-50%);
 }
 
